@@ -6,43 +6,56 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/03 19:56:28 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/04 16:30:55 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-# define MINISHELL_H
+#define MINISHELL_H
 
-# include <readline/readline.h>
+// Includes
+#include <readline/readline.h>
+#include <libft.h>
 
-typedef enum e_tokens {
-	WORD = 1,
-	OPTION = 2,
-	LESS = 3,
-	GREAT = 4,
-	PIPE = 5,
-	AMPERSAND = 6,
-	NEWLINE = 7,
-	HEREDOC = 8,
-	GREATAMP = 9,
-	COMMAND = 10,
-	INFILE = 11,
-	OUTFILE = 12,
-}	t_tokens;
-
-typedef struct s_command
+// Token definitions
+typedef enum e_token_type
 {
-	char	*infile;
-	char	*outfile;
-	char	**command;
-	char	*here_doc;
-	int		num;
-	char	*line;
-}	t_command;
+	PIPE = 1,
+	READ_IN = 2,
+	READ_OUT = 3,
+	DOLLAR = 4,
+	QUOTE2 = 5,
+	QUOTE = 6,
+	SPACE = 7,
+	TAB = 8,
+	NEWLINE = 9,
+	HERE_DOC = 10,
+	READ_OUT_APP = 11,
+	WORD = 12,
+	START = 13
+} t_token_type;
 
-typedef struct s_token {
-	t_tokens	token;
-}	t_token;
+typedef struct s_app_data
+{
+	char	*env;
+	int		env_lines;
+}
+
+// typedef struct s_command
+// {
+// 	char	*infile;
+// 	char	*outfile;
+// 	char	**command;
+// 	char	*here_doc;
+// 	int		num;
+// 	char	*line;
+// } t_command;
+
+typedef struct s_token
+{
+	t_token_type	token;
+	char			*value;
+} t_token;
 
 #endif
 
@@ -54,7 +67,6 @@ INPUT -> (LEXER -> PARSER) ->
 struct->infile = infile;
 
 */
-
 
 /*
 commandline input  = "infile cat -c >> output"
