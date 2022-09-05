@@ -6,16 +6,26 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/04 16:30:55 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/05 17:59:10 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
 // Includes
-#include <readline/readline.h>
-#include <libft.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <stdbool.h>
+# include <libft.h>
+
+t_shelly	g_shelly;
+
+typedef struct s_env_var {
+	char				*key;
+	char				*value;
+	struct s_env_var	*next;
+}	t_env_var;
 
 // Token definitions
 typedef enum e_token_type
@@ -33,13 +43,37 @@ typedef enum e_token_type
 	READ_OUT_APP = 11,
 	WORD = 12,
 	START = 13
-} t_token_type;
+}	t_token_type;
 
-typedef struct s_app_data
+typedef struct s_token
 {
-	char	*env;
-	int		env_lines;
-}
+	t_token_type	token;
+	char			*value;
+}	t_token;
+
+typedef struct s_command {
+	char	*path;
+	char	**args;
+}	t_command;
+
+typedef struct s_shelly {
+	t_env_var		*env;
+	int				exit_code;
+	int				fd_in;
+	int				fd_out;
+	int				pipe[2];
+	pid_t			pid;
+	t_command		*cmds;
+	size_t			cmd_n;
+}	t_shelly;
+
+#endif
+
+// typedef struct s_app_data
+// {
+// 	char	*env;
+// 	int		env_lines;
+// }
 
 // typedef struct s_command
 // {
@@ -50,14 +84,6 @@ typedef struct s_app_data
 // 	int		num;
 // 	char	*line;
 // } t_command;
-
-typedef struct s_token
-{
-	t_token_type	token;
-	char			*value;
-} t_token;
-
-#endif
 
 /*
 INPUT -> (LEXER -> PARSER) ->
