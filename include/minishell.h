@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/05 17:59:10 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/06 20:51:35 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,39 @@
 # define MINISHELL_H
 
 // Includes
+# include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <libft.h>
 
-t_shelly	g_shelly;
-
-typedef struct s_env_var {
-	char				*key;
-	char				*value;
-	struct s_env_var	*next;
-}	t_env_var;
+typedef struct s_env {
+	char			*key;
+	char			*value;
+	struct s_env	*prev;
+	struct s_env	*next;
+}	t_env;
 
 // Token definitions
 typedef enum e_token_type
 {
 	PIPE = 1,
-	READ_IN = 2,
-	READ_OUT = 3,
-	DOLLAR = 4,
-	QUOTE2 = 5,
-	QUOTE = 6,
-	SPACE = 7,
-	TAB = 8,
-	NEWLINE = 9,
-	HERE_DOC = 10,
-	READ_OUT_APP = 11,
-	WORD = 12,
-	START = 13
+	INFILE = 2,
+	OUTFILE = 3,
+	HERE_DOC = 5,
+	OUTFILE_APPEND = 6,
+	OPTION = 7,
+	COMMAND = 8,
+	ARG = 9,
 }	t_token_type;
 
 typedef struct s_token
 {
 	t_token_type	token;
 	char			*value;
+	unsigned int	idx;
+	unsigned int	length;
 }	t_token;
 
 typedef struct s_command {
@@ -57,17 +55,28 @@ typedef struct s_command {
 }	t_command;
 
 typedef struct s_shelly {
-	t_env_var		*env;
-	int				exit_code;
-	int				fd_in;
-	int				fd_out;
-	int				pipe[2];
-	pid_t			pid;
-	t_command		*cmds;
-	size_t			cmd_n;
+	t_env		*env;
+	t_token		*token;
+	int			exit_code;
+	int			fd_in;
+	int			fd_out;
+	int			pipe[2];
+	pid_t		pid;
+	t_command	*cmds;
+	size_t		cmd_n;
 }	t_shelly;
 
+
+t_shelly	g_shelly;
+
+
 #endif
+
+// token length bepalen is belangrijk zodat je bijv kunt allocaten
+
+
+// als je export variable en je geeft het geen waarde
+// dan is ie ook niet te zien in je env, maar bestaat wel.
 
 // typedef struct s_app_data
 // {
