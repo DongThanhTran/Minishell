@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/07 23:49:01 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/07 23:51:56 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,24 +95,6 @@ t_shelly	g_shelly;
 // 	char	*env;
 // 	int		env_lines;
 // }
-
-typedef struct s_command {
-	char	*path;
-	char	**args;
-}	t_command;
-
-typedef struct s_shelly {
-	t_env_var		*env;
-	int				exit_code;
-	int				fd_in;
-	int				fd_out;
-	int				pipe[2];
-	pid_t			pid;
-	t_command		*cmds;
-	size_t			cmd_n;
-}	t_shelly;
-
-#endif
 
 /*
 INPUT -> (LEXER -> PARSER) ->
