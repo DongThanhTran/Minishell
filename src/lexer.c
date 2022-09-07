@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:54:51 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/06 20:13:26 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/07 21:40:35 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,30 @@ t_token_type	token_specifier(char *cmd_line, unsigned int idx)
 		return (COMMAND);
 }
 
-// t_command *lexer(char *str)
-// {
+// STAPPEN LEXER:
+// 1. s_token invullen
+// 1a. token type
+// 1b. char *value
+// 1c. idx (positie van de token)
+// 1d. length (van de string in de cmd_line)
+// 2. post processen
+// moet we hier iets returnen?
+t_command *lexer(char *cmd_line)
+{
+	unsigned int	idx;
 
-// }
+	idx = 0;
+	// we moeten de de args splitten
+	while (cmd_line[idx])
+	{
+
+	}
+}
+
+
+
+
+
 
 // functie om node aan te maken add_token vars te zetten en toevoegen aan linkedl
 // post processen moet wel (OPTION pas tokenizen in de postprocessor)

@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/06 20:51:35 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/07 16:24:44 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,7 @@ typedef struct s_shelly {
 	size_t		cmd_n;
 }	t_shelly;
 
-
 t_shelly	g_shelly;
-
 
 #endif
 
