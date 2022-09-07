@@ -6,11 +6,12 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:54:51 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/07 21:40:35 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/07 23:45:03 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 // functies voor word, option, command, infile, outfile
 t_token_type	token_specifier(char *cmd_line, unsigned int idx)
 {
@@ -33,25 +34,51 @@ t_token_type	token_specifier(char *cmd_line, unsigned int idx)
 // 1a. token type
 // 1b. char *value
 // 1c. idx (positie van de token)
-// 1d. length (van de string in de cmd_line)
 // 2. post processen
 // moet we hier iets returnen?
-t_command *lexer(char *cmd_line)
+void	lexer(t_token *head, char *cmd_line)
+{
+	t_token			*new;
+	unsigned int	idx;
+
+	idx = 0;
+	while (cmd_line[idx])
+	{
+		if (ft_strchr(SYMBOLS, cmd_line[idx]))
+			new = symbol_token(cmd_line[idx]);
+		else
+			new = word_token(cmd_line[idx]);
+		// idx ????
+	}
+}
+
+t_token	*symbol_token(char *cmd_line)
+{	
+	t_token			*token;
+	t_token_type	type;
+	unsigned int	length;
+
+	length = 0;
+	type = ft_strchr(SYMBOLS, cmd_line[0]) - SYMBOLS;
+	if (type == PIPE)
+	if (type == DQUOTE)
+	if (type == QUOTE)
+	if (type == SPACE || type == TAB)
+		
+	if (type == NEWLINE)
+	if (type == INFILE || type == OUTFILE)
+	token->token = type;
+	token->value = ft_substr(cmd_line, 0, length);
+	return (token);
+}
+
+t_token	*word_token(char *cmd_line)
 {
 	unsigned int	idx;
 
 	idx = 0;
-	// we moeten de de args splitten
-	while (cmd_line[idx])
-	{
-
-	}
+	while ()
 }
-
-
-
-
-
 
 // functie om node aan te maken add_token vars te zetten en toevoegen aan linkedl
 // post processen moet wel (OPTION pas tokenizen in de postprocessor)
