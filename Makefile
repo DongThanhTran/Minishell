@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/08/31 18:33:20 by dtran         ########   odam.nl          #
+#    Updated: 2022/09/06 20:58:10 by dtran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,10 @@ LIBFT		= include/libft
 CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra
 READLINE	= -lreadline
+BREW_DIR	= $(shell brew --prefix)
+LIB_READLINE	= $(BREW_DIR)/opt/readline/lib
+INCLUDE_READLINE = -I $(BREW_DIR)/opt/readline/include
+READLINE_DIRS = -L $(LIB_READLINE) $(READLINE)
 RM			= rm -rf
 MKDIR		= mkdir -p objs
 HEADERS		= -I $(LIBFT) -I $(MINISHELL)
@@ -45,13 +49,13 @@ all: message libft $(NAME)
 
 #===============================================================================: Main compile
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) $(LIBFT)/libft.a -o $(NAME) $(READLINE)
+	@$(CC) $(OBJS) $(HEADERS) $(LIBFT)/libft.a $(READLINE_DIRS) $(READLINE) -o $(NAME)
 	@printf "$(GREEN)✅Executable \"$(NAME)\" created!$(RESET)\n\n"
 
 #===============================================================================: C file compile
 objs/%.o: src/%.c
 	@$(MKDIR)
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+	@$(CC) $(CFLAGS) $(INCLUDE_READLINE) -o $@ -c $< $(HEADERS)
 ifeq ($(DB),1)
 	@printf "$(GREEN)\r🔨Compiling: $(MAGENTA)$(notdir $<)$(GREEN)\r\e[35C[OK]\n$(RESET)"
 endif
