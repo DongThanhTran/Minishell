@@ -6,16 +6,29 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/03 19:56:28 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/05 17:18:21 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+// Includes
 # include <readline/readline.h>
+# include <readline/history.h>
+# include <stdbool.h>
+# include <libft.h>
 
-typedef enum e_tokens {
+t_shelly	g_shelly;
+
+typedef struct s_env_var {
+	char				*key;
+	char				*value;
+	struct s_env_var	*next;
+}	t_env_var;
+
+// Token definitions
+typedef enum e_tokentype {
 	WORD = 1,
 	OPTION = 2,
 	LESS = 3,
@@ -28,21 +41,32 @@ typedef enum e_tokens {
 	COMMAND = 10,
 	INFILE = 11,
 	OUTFILE = 12,
-}	t_tokens;
-
-typedef struct s_command
-{
-	char	*infile;
-	char	*outfile;
-	char	**command;
-	char	*here_doc;
-	int		num;
-	char	*line;
-}	t_command;
+}	t_tokentype;
 
 typedef struct s_token {
-	t_tokens	token;
+	t_tokentype		type;
+	unsigned int	index;
+	unsigned int	length;
+	bool			expandable;
+	bool			adjacent;
+	struct s_token	*next;
 }	t_token;
+
+typedef struct s_command {
+	char	*path;
+	char	**args;
+}	t_command;
+
+typedef struct s_shelly {
+	t_env_var		*env;
+	int				exit_code;
+	int				fd_in;
+	int				fd_out;
+	int				pipe[2];
+	pid_t			pid;
+	t_command		*cmds;
+	size_t			cmd_n;
+}	t_shelly;
 
 #endif
 
@@ -54,7 +78,6 @@ INPUT -> (LEXER -> PARSER) ->
 struct->infile = infile;
 
 */
-
 
 /*
 commandline input  = "infile cat -c >> output"
