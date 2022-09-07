@@ -104,13 +104,13 @@ void	sighandler(int signum)
 int	main(int argc, char **argv, char **envp)
 {
 	char	*cmd_line;
+	t_token	*tokens;
 
 	signal(SIGINT, sighandler);
 
 	(void)argc;
 	(void)argv;
 	g_shelly.env = get_env(envp);
-
 
 	while (1)
 	{
