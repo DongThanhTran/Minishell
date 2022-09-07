@@ -82,15 +82,23 @@ t_shelly	g_shelly;
 // 	int		env_lines;
 // }
 
-// typedef struct s_command
-// {
-// 	char	*infile;
-// 	char	*outfile;
-// 	char	**command;
-// 	char	*here_doc;
-// 	int		num;
-// 	char	*line;
-// } t_command;
+typedef struct s_command {
+	char	*path;
+	char	**args;
+}	t_command;
+
+typedef struct s_shelly {
+	t_env_var		*env;
+	int				exit_code;
+	int				fd_in;
+	int				fd_out;
+	int				pipe[2];
+	pid_t			pid;
+	t_command		*cmds;
+	size_t			cmd_n;
+}	t_shelly;
+
+#endif
 
 /*
 INPUT -> (LEXER -> PARSER) ->
