@@ -6,12 +6,14 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/07 16:24:44 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/08 18:22:16 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define SYMBOLS "\"\' \t\n|<>$"
 
 // Includes
 # include <stdio.h>
@@ -21,6 +23,7 @@
 # include <stdbool.h>
 # include <libft.h>
 
+// Environment
 typedef struct s_env {
 	char			*key;
 	char			*value;
@@ -31,29 +34,37 @@ typedef struct s_env {
 // Token definitions
 typedef enum e_token_type
 {
-	PIPE = 1,
-	INFILE = 2,
-	OUTFILE = 3,
-	HERE_DOC = 5,
-	OUTFILE_APPEND = 6,
-	OPTION = 7,
-	COMMAND = 8,
-	ARG = 9,
+	DQUOTE,
+	QUOTE,
+	SPACE,
+	TAB,
+	NEWLINE,
+	PIPE,
+	INFILE,
+	OUTFILE,
+	DOLLAR,
+	HEREDOC,
+	OUTFILE_APPEND,
+	WORD,
+	START
 }	t_token_type;
 
+// Token
 typedef struct s_token
 {
 	t_token_type	token;
 	char			*value;
-	unsigned int	idx;
-	unsigned int	length;
+	t_token			*prev;
+	t_token			*next;
 }	t_token;
 
+// Commands
 typedef struct s_command {
 	char	*path;
 	char	**args;
 }	t_command;
 
+// Shell information
 typedef struct s_shelly {
 	t_env		*env;
 	t_token		*token;
@@ -66,6 +77,7 @@ typedef struct s_shelly {
 	size_t		cmd_n;
 }	t_shelly;
 
+// Global shell
 t_shelly	g_shelly;
 
 #endif
@@ -81,24 +93,6 @@ t_shelly	g_shelly;
 // 	char	*env;
 // 	int		env_lines;
 // }
-
-typedef struct s_command {
-	char	*path;
-	char	**args;
-}	t_command;
-
-typedef struct s_shelly {
-	t_env_var		*env;
-	int				exit_code;
-	int				fd_in;
-	int				fd_out;
-	int				pipe[2];
-	pid_t			pid;
-	t_command		*cmds;
-	size_t			cmd_n;
-}	t_shelly;
-
-#endif
 
 /*
 INPUT -> (LEXER -> PARSER) ->
