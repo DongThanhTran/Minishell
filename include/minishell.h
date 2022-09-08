@@ -6,58 +6,93 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/04 16:30:55 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/08 18:22:16 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
+
+# define SYMBOLS "\"\' \t\n|<>$"
 
 // Includes
-#include <readline/readline.h>
-#include <libft.h>
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <signal.h>
+# include <stdbool.h>
+# include <libft.h>
+
+// Environment
+typedef struct s_env {
+	char			*key;
+	char			*value;
+	struct s_env	*prev;
+	struct s_env	*next;
+}	t_env;
 
 // Token definitions
 typedef enum e_token_type
 {
-	PIPE = 1,
-	READ_IN = 2,
-	READ_OUT = 3,
-	DOLLAR = 4,
-	QUOTE2 = 5,
-	QUOTE = 6,
-	SPACE = 7,
-	TAB = 8,
-	NEWLINE = 9,
-	HERE_DOC = 10,
-	READ_OUT_APP = 11,
-	WORD = 12,
-	START = 13
-} t_token_type;
+	DQUOTE,
+	QUOTE,
+	SPACE,
+	TAB,
+	NEWLINE,
+	PIPE,
+	INFILE,
+	OUTFILE,
+	DOLLAR,
+	HEREDOC,
+	OUTFILE_APPEND,
+	WORD,
+	START
+}	t_token_type;
 
-typedef struct s_app_data
-{
-	char	*env;
-	int		env_lines;
-}
-
-// typedef struct s_command
-// {
-// 	char	*infile;
-// 	char	*outfile;
-// 	char	**command;
-// 	char	*here_doc;
-// 	int		num;
-// 	char	*line;
-// } t_command;
-
+// Token
 typedef struct s_token
 {
 	t_token_type	token;
 	char			*value;
-} t_token;
+	t_token			*prev;
+	t_token			*next;
+}	t_token;
+
+// Commands
+typedef struct s_command {
+	char	*path;
+	char	**args;
+}	t_command;
+
+// Shell information
+typedef struct s_shelly {
+	t_env		*env;
+	t_token		*token;
+	int			exit_code;
+	int			fd_in;
+	int			fd_out;
+	int			pipe[2];
+	pid_t		pid;
+	t_command	*cmds;
+	size_t		cmd_n;
+}	t_shelly;
+
+// Global shell
+t_shelly	g_shelly;
 
 #endif
+
+// token length bepalen is belangrijk zodat je bijv kunt allocaten
+
+
+// als je export variable en je geeft het geen waarde
+// dan is ie ook niet te zien in je env, maar bestaat wel.
+
+// typedef struct s_app_data
+// {
+// 	char	*env;
+// 	int		env_lines;
+// }
 
 /*
 INPUT -> (LEXER -> PARSER) ->
