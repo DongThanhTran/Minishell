@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/07 23:51:56 by dtran         ########   odam.nl         */
+/*   Updated: 2022/09/08 18:22:16 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ typedef struct s_token
 	char			*value;
 	t_token			*prev;
 	t_token			*next;
-	// unsigned int	idx;
-	// unsigned int	length;
 }	t_token;
 
 // Commands
