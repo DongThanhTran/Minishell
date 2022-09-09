@@ -34,28 +34,28 @@ typedef struct s_env {
 // Token definitions
 typedef enum e_token_type
 {
-	DQUOTE,
-	QUOTE,
-	SPACE,
-	TAB,
-	NEWLINE,
-	PIPE,
-	INFILE,
-	OUTFILE,
-	DOLLAR,
-	HEREDOC,
-	OUTFILE_APPEND,
-	WORD,
-	START
+	dquote,
+	quote,
+	space,
+	tab,
+	newline,
+	pipe_val,
+	infile,
+	outfile,
+	dollar,
+	heredoc,
+	append_outfile,
+	word,
+	start
 }	t_token_type;
 
 // Token
 typedef struct s_token
 {
-	t_token_type	token;
-	char			*value;
-	t_token			*prev;
-	t_token			*next;
+	t_token_type			token;
+	char							*value;
+	struct s_token		*prev;
+	struct s_token		*next;
 }	t_token;
 
 // Commands
