@@ -16,17 +16,17 @@
 t_token_type	token_specifier(char *cmd_line, unsigned int idx)
 {
 	if (ft_strncmp(&cmd_line[idx], "<<", 2) == 0)
-		return (HEREDOC);
+		return (heredoc);
 	else if (ft_strncmp(&cmd_line[idx], ">>", 2) == 0)
-		return (OUTFILE_APPEND);
+		return (append_outfile);
 	else if (cmd_line[idx] == '<')
-		return (INFILE);
+		return (infile);
 	else if (cmd_line[idx] == '>')
-		return (OUTFILE);
+		return (outfile);
 	else if (cmd_line[idx] == '|')
-		return (PIPE);
+		return (pipe_val);
 	else
-		return (WORD);
+		return (word);
 }
 
 // STAPPEN LEXER:
@@ -36,21 +36,6 @@ t_token_type	token_specifier(char *cmd_line, unsigned int idx)
 // 1c. idx (positie van de token)
 // 2. post processen
 // moet we hier iets returnen?
-void	lexer(t_token *head, char *cmd_line)
-{
-	t_token			*new;
-	unsigned int	idx;
-
-	idx = 0;
-	while (cmd_line[idx])
-	{
-		if (ft_strchr(SYMBOLS, cmd_line[idx]))
-			new = symbol_token(&cmd_line[idx]);
-		else
-			new = word_token(cmd_line, idx);
-		// idx ????
-	}
-}
 
 t_token	*symbol_token(char *cmd_line)
 {
@@ -59,18 +44,19 @@ t_token	*symbol_token(char *cmd_line)
 	unsigned int	length;
 
 	length = 0;
+	token = malloc(sizeof(t_token));
 	type = ft_strchr(SYMBOLS, cmd_line[0]) - SYMBOLS;
-	if (type == PIPE)
+	if (type == pipe_val)
 	// als het een pipe is dan i + 1 is geen spatie of command
-	if (type == DQUOTE)
+	if (type == dquote)
 	// itereren tot je nog een " tegenkomt
-	if (type == QUOTE)
+	if (type == quote)
 	// itereren tot je nog een ' tegenkomt
-	if (type == SPACE || type == TAB)
+	if (type == space || type == tab)
 	//then idx++;
-	if (type == NEWLINE)
+	if (type == newline)
 	// ???
-	if (type == INFILE || type == OUTFILE)
+	if (type == infile || type == outfile)
 	// zoeken voor de naam van de infile?
 	token->token = type;
 	token->value = ft_substr(cmd_line, 0, length);
@@ -85,12 +71,28 @@ unsigned int	word_token(char *cmd_line, int start)
 	idx = 0;
 	while (ft_strchr(SYMBOLS, cmd_line[start + idx]) == 0)
 		idx++;
-	new->token = WORD;
+	new->token = word;
 	//ft_substr(cmd_line, start, idx + 1)???
 	new->value = ft_substr(cmd_line, start, idx);
 	ft_lstadd_back(g_shelly.token, new);
 	new->prev = ft_lstlast(g_shelly.token);
 	return (idx);
+}
+
+void	lexer(t_token *head, char *cmd_line)
+{
+	t_token			*new;
+	unsigned int	idx;
+
+	idx = 0;
+	while (cmd_line[idx])
+	{
+		if (ft_strchr(SYMBOLS, cmd_line[idx]))
+			new = symbol_token(&cmd_line[idx]);
+		else
+				new = word_token(cmd_line, idx);
+		idx += 10;
+	}
 }
 
 // functie om node aan te maken add_token vars te zetten en toevoegen aan linkedl
