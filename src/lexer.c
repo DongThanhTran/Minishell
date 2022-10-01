@@ -6,95 +6,103 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:54:51 by dtran         #+#    #+#                 */
-/*   Updated: 2022/09/08 18:48:47 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/01 20:01:55 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-// functies voor word, option, command, infile, outfile
-t_token_type	token_specifier(char *cmd_line, unsigned int idx)
+int	dollar_len(char *str)
 {
-	if (ft_strncmp(&cmd_line[idx], "<<", 2) == 0)
-		return (heredoc);
-	else if (ft_strncmp(&cmd_line[idx], ">>", 2) == 0)
-		return (append_outfile);
-	else if (cmd_line[idx] == '<')
-		return (infile);
-	else if (cmd_line[idx] == '>')
-		return (outfile);
-	else if (cmd_line[idx] == '|')
-		return (pipe_val);
-	else
-		return (word);
+	if (*str == '?')
+		return (1);
+	return (ft_name_len(str));
 }
 
-// STAPPEN LEXER:
-// 1. s_token invullen
-// 1a. token type
-// 1b. char *value
-// 1c. idx (positie van de token)
-// 2. post processen
-// moet we hier iets returnen?
+// moet \n er wel in?
+// miss moeten we isspace aanpassen
+static int	get_type(char type)
+{
+	if (type == '|')
+		return (pipe_char);
+	else if (type == '<')
+		return (infile);
+	else if (type == '>')
+		return (outfile);
+	else if (type == '$')
+		return (dollar);
+	else if (type == '\"')
+		return (dquote);
+	else if (type == '\'')
+		return (quote);
+	else if (type == '\n')
+		return (newline);
+	return (1);
+}
 
-t_token	*symbol_token(char *cmd_line)
+static t_token	*ft_symbol_token(char *prompt)
 {
 	t_token			*token;
 	t_token_type	type;
 	unsigned int	length;
 
-	length = 0;
+	length = 1;
 	token = malloc(sizeof(t_token));
-	type = ft_strchr(SYMBOLS, cmd_line[0]) - SYMBOLS;
-	if (type == pipe_val)
-	// als het een pipe is dan i + 1 is geen spatie of command
-	if (type == dquote)
-	// itereren tot je nog een " tegenkomt
-	if (type == quote)
-	// itereren tot je nog een ' tegenkomt
-	if (type == space || type == tab)
-	//then idx++;
-	if (type == newline)
-	// ???
-	if (type == infile || type == outfile)
-	// zoeken voor de naam van de infile?
-	token->token = type;
-	token->value = ft_substr(cmd_line, 0, length);
+	if (!token)
+		return (NULL);
+	type = get_type(*prompt);
+	if (type == dollar)
+		length += dollar_len(&prompt[1]);
+	if ((type == infile && prompt[1] == '<') || \
+		(type == outfile && prompt[1] == '>'))
+	{
+		length++;
+		if (type == infile)
+			type = here_doc;
+		else
+			type = append_outfile;
+	}
+	token->token_type = type;
+	token->value = ft_substr(prompt, 0, length);
+	token->len = length;
 	return (token);
 }
 
-unsigned int	word_token(char *cmd_line, int start)
+static t_token	*ft_word_token(char *prompt)
 {
 	t_token			*new;
 	unsigned int	idx;
 
 	idx = 0;
-	while (ft_strchr(SYMBOLS, cmd_line[start + idx]) == 0)
+	new = malloc(sizeof(t_token));
+	if (!new)
+		return (NULL);
+	new->token_type = word;
+	while (!ft_strchr(SYMBOLS, prompt[idx]))
 		idx++;
-	new->token = word;
-	//ft_substr(cmd_line, start, idx + 1)???
-	new->value = ft_substr(cmd_line, start, idx);
-	ft_lstadd_back(g_shelly.token, new);
-	new->prev = ft_lstlast(g_shelly.token);
-	return (idx);
+	new->value = ft_substr(prompt, 0, idx);
+	new->len = idx;
+	return (new);
 }
 
-void	lexer(t_token *head, char *cmd_line)
+t_token	*ft_lexer(char *prompt)
 {
-	t_token			*new;
-	unsigned int	idx;
+	t_token	*tokens;
+	t_token	*token;
 
-	idx = 0;
-	while (cmd_line[idx])
+	tokens = malloc(sizeof(t_token));
+	if (!tokens)
+		return (NULL);
+	while (*prompt)
 	{
-		if (ft_strchr(SYMBOLS, cmd_line[idx]))
-			new = symbol_token(&cmd_line[idx]);
+		while (*prompt && ft_isspace(*prompt))
+			prompt++;
+		if (ft_strchr(SYMBOLS, *prompt))
+			token = ft_symbol_token(prompt);
 		else
-				new = word_token(cmd_line, idx);
-		idx += 10;
+			token = ft_word_token(prompt);
+		ft_token_add_back(tokens, token);
+		prompt += token->len;
 	}
+	return (tokens);
 }
-
-// functie om node aan te maken add_token vars te zetten en toevoegen aan linkedl
-// post processen moet wel (OPTION pas tokenizen in de postprocessor)
-// alles dat tussen quotes dat moet 1 token zijn ofwel 1 arg

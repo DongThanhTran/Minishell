@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   utils.c                                            :+:    :+:            */
+/*   env.c                                              :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/09/07 23:42:11 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/01 19:15:54 by dtran         ########   odam.nl         */
+/*   Created: 2022/10/01 17:32:11 by dtran         #+#    #+#                 */
+/*   Updated: 2022/10/01 17:32:17 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../include/minishell.h"
 
-// int	add_token(t_token *head, t_token new)
-// {
-
-// }
-
-int	ft_name_len(char *str)
+void	parse_env(char *envp[])
 {
-	int	strlen;
-	int	i;
+	t_env	*type;
+	int		i;
+	char	**split_envp;
 
+	type = ft_calloc(sizeof(t_env), 1);
+	if (!type)
+		return ;
 	i = 0;
-	strlen = ft_strlen(str);
-	if (!(*str == '_' || ft_isalpha(*str)))
-		return (0);
-	while (i < strlen)
+	while (envp[i])
 	{
-		if (str[i] == '_' || ft_isalnum(str[i]))
-			i++;
-		else
-			break ;
+		split_envp = ft_split(envp[i], '=');
+		type->key = split_envp[0];
+		type->value = split_envp[1];
+		if (type->value && type->key)
+		{
+			type->next = ft_calloc(sizeof(t_env), 1);
+			type = type->next;
+		}
+		i++;
 	}
-	return (i);
 }
