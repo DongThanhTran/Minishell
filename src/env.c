@@ -74,7 +74,19 @@ static int	add_var(t_env **head, char *env_str)
  	return (1);
 }
 
-t_env	*get_env(char **envp)
+char	*ft_get_env(t_token *token, t_env *env)
+{
+	t_env	*tmp;
+
+	tmp = env;
+	while (tmp && (ft_strncmp(&token->value[1], tmp->key, token->len) != 0))
+		tmp = tmp->next;
+	if (!tmp)
+		return (NULL);
+	return (tmp->value);
+}
+
+t_env	*set_env(char **envp)
 {
  	t_env	*env;
 

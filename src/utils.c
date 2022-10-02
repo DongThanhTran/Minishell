@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:42:11 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/02 16:47:54 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/02 18:16:12 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_syntax_error(char *str)
 {
-	exitcode = 2;
+	g_exitcode = 2;
 	ft_putstr_fd("minishell: syntax error: ", 2);
 	ft_putendl_fd(str, 2);
 	return (-1);

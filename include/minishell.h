@@ -59,8 +59,9 @@ typedef struct s_env {
 }	t_env;
 
 // env
-t_env	*get_env(char **envp);
+t_env	*set_env(char **envp);
 t_env	*clear_env(t_env *env);
+char	*ft_get_env(t_token *token, t_env *env);
 
 // lexer
 t_token	*ft_lexer(char *prompt);
