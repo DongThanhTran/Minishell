@@ -25,13 +25,14 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char		*input;
 	// char		**command;
+	char		*check;
 	t_token		*head;
 	t_env		*env;
 
 	init_signals();
 	(void)argc;
 	(void)argv;
-	env = get_env(envp);
+	env = set_env(envp);
 	while (1)
 	{
 		input = readline("Minishell$ ");
@@ -44,6 +45,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (input && *input)
 			add_history(input);
 		head = ft_lexer(input);
+		check = ft_get_env(head->next, env);
 		// command = ft_parser(head, en);
 		print_list(head);
 		free(input);
