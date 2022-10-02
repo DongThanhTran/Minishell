@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/01 19:59:42 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/02 10:58:26 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ typedef enum e_token_type
 	dollar,
 	dquote,
 	quote,
-	space,
-	tab,
 	newline,
 	here_doc,
 	append_outfile,

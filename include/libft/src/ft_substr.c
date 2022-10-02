@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/18 15:24:25 by dtran         #+#    #+#                 */
-/*   Updated: 2021/11/23 18:02:50 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/02 10:56:13 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_substr(char const *str, unsigned int start, size_t len)
 	if (!str)
 		return (0);
 	strlen = ft_strlen(str);
-	if (str == '\0')
+	if (str == NULL)
 		return (0);
 	if (strlen < start)
 		return (ft_strdup(""));
