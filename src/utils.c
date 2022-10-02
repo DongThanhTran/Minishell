@@ -6,16 +6,19 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:42:11 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/01 19:15:54 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/02 16:47:54 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// int	add_token(t_token *head, t_token new)
-// {
-
-// }
+int	ft_syntax_error(char *str)
+{
+	exitcode = 2;
+	ft_putstr_fd("minishell: syntax error: ", 2);
+	ft_putendl_fd(str, 2);
+	return (-1);
+}
 
 int	ft_name_len(char *str)
 {
