@@ -34,7 +34,7 @@ int	main(int argc, char *argv[], char *envp[])
 	env = get_env(envp);
 	while (1)
 	{
-		input = readline("Dit is echt leuk: ");
+		input = readline("Minishell$ ");
 		if (!input)
 		{
 			// When ctrl + D is pushed, this will put out the message that it has stopped.
