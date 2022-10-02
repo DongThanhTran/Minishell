@@ -24,13 +24,14 @@ void	print_list(t_token *head)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char		*input;
+	// char		**command;
 	t_token		*head;
-	extern char	*rl_line_buffer;
+	t_env		*env;
 
 	init_signals();
 	(void)argc;
 	(void)argv;
-	parse_env(envp);
+	env = get_env(envp);
 	while (1)
 	{
 		input = readline("Dit is echt leuk: ");
@@ -43,6 +44,7 @@ int	main(int argc, char *argv[], char *envp[])
 		if (input && *input)
 			add_history(input);
 		head = ft_lexer(input);
+		// command = ft_parser(head, en);
 		print_list(head);
 		free(input);
 		input = NULL;

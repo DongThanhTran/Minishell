@@ -23,6 +23,8 @@
 # include <stdbool.h>
 # include <libft.h>
 
+extern int exitcode;
+
 // Token definitions
 typedef enum e_token_type
 {
@@ -57,30 +59,9 @@ typedef struct s_env {
 	struct s_env	*next;
 }	t_env;
 
-// // Commands
-// typedef struct s_command {
-// 	char	*path;
-// 	char	**args;
-// }	t_command;
-
-// // Shell information
-// typedef struct s_shelly {
-// 	t_env		*env;
-// 	t_token		*token;
-// 	int			exit_code;
-// 	int			fd_in;
-// 	int			fd_out;
-// 	int			pipe[2];
-// 	pid_t		pid;
-// 	t_command	*cmds;
-// 	size_t		cmd_n;
-// }	t_shelly;
-
-// // Global shell
-// t_shelly	g_shelly;
-
 // env
-void	parse_env(char *envp[]);
+t_env	*get_env(char **envp);
+t_env	*clear_env(t_env *env);
 
 // lexer
 t_token	*ft_lexer(char *prompt);
