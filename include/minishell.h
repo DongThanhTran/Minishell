@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/02 17:11:45 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/02 18:39:25 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ void	ft_token_del(t_token *token);
 // parser
 
 // expander
-int		ft_expander(t_token *head);
+int		ft_expander(t_token *head, t_env *env);
 
 #endif

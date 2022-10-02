@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/10/02 11:02:06 by dtran         ########   odam.nl          #
+#    Updated: 2022/10/02 18:39:59 by dtran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				env \
 				signal \
 				lexer \
+				expand \
 				parser \
 				utils \
 				lst_utils \
