@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:54:51 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/01 20:01:55 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/03 19:34:12 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,24 @@ int	dollar_len(char *str)
 	return (ft_name_len(str));
 }
 
-// moet \n er wel in?
-// miss moeten we isspace aanpassen
 static int	get_type(char type)
 {
 	if (type == '|')
 		return (pipe_char);
 	else if (type == '<')
-		return (infile);
+		return (inf);
 	else if (type == '>')
-		return (outfile);
+		return (outf);
 	else if (type == '$')
 		return (dollar);
 	else if (type == '\"')
 		return (dquote);
 	else if (type == '\'')
 		return (quote);
+	else if (type == '\t')
+		return (tab);
+	else if (type == ' ')
+		return (space);
 	else if (type == '\n')
 		return (newline);
 	return (1);
@@ -48,16 +50,17 @@ static t_token	*ft_symbol_token(char *prompt)
 
 	length = 1;
 	token = malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
+	ft_checkmalloc(token);
 	type = get_type(*prompt);
+	if (type == tab || type == space)
+		while (prompt[length] == ' ' || prompt[length] == '\t')
+			length++;
 	if (type == dollar)
 		length += dollar_len(&prompt[1]);
-	if ((type == infile && prompt[1] == '<') || \
-		(type == outfile && prompt[1] == '>'))
+	if ((type == inf && prompt[1] == '<') || (type == outf && prompt[1] == '>'))
 	{
 		length++;
-		if (type == infile)
+		if (type == inf)
 			type = here_doc;
 		else
 			type = append_outfile;
@@ -85,24 +88,17 @@ static t_token	*ft_word_token(char *prompt)
 	return (new);
 }
 
-t_token	*ft_lexer(char *prompt)
+void	ft_lexer(t_token *head, char *prompt)
 {
-	t_token	*tokens;
 	t_token	*token;
 
-	tokens = malloc(sizeof(t_token));
-	if (!tokens)
-		return (NULL);
 	while (*prompt)
 	{
-		while (*prompt && ft_isspace(*prompt))
-			prompt++;
 		if (ft_strchr(SYMBOLS, *prompt))
 			token = ft_symbol_token(prompt);
 		else
 			token = ft_word_token(prompt);
-		ft_token_add_back(tokens, token);
+		ft_token_add_back(head, token);
 		prompt += token->len;
 	}
-	return (tokens);
 }

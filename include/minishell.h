@@ -6,14 +6,14 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/02 18:39:25 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/03 19:08:01 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define SYMBOLS "\"\' \t\n|<>$"
+# define SYMBOLS "|<>$\"\' \t\n"
 
 // Includes
 # include <stdio.h>
@@ -23,17 +23,19 @@
 # include <stdbool.h>
 # include <libft.h>
 
-extern int g_exitcode;
+extern int	g_exitcode;
 
 // Token definitions
 typedef enum e_token_type
 {
 	pipe_char,
-	infile,
-	outfile,
+	inf,
+	outf,
 	dollar,
 	dquote,
 	quote,
+	space,
+	tab,
 	newline,
 	here_doc,
 	append_outfile,
@@ -64,7 +66,7 @@ t_env	*clear_env(t_env *env);
 char	*ft_get_env(t_token *token, t_env *env);
 
 // lexer
-t_token	*ft_lexer(char *prompt);
+void	ft_lexer(t_token *head, char *prompt);
 
 // sigs
 void	init_signals(void);
@@ -76,6 +78,7 @@ int		ft_syntax_error(char *str);
 // list utils
 void	ft_token_add_back(t_token *token, t_token *new);
 void	ft_token_del(t_token *token);
+t_token	*ft_init_token(void);
 
 // parser
 

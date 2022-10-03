@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 16:32:02 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/02 18:52:30 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/03 19:37:10 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	print_list(t_token *head)
 {
 	while (head != NULL)
 	{
-		printf("length: %d\t type: %d\t value: %s\n", head->len, head->token_type, head->value);
+		printf("length: %d\t type: %d\t value: %s\n", head->len, \
+				head->token_type, head->value);
 		head = head->next;
 	}
 }
@@ -32,6 +33,8 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	env = set_env(envp);
+	head = ft_init_token();
+	ft_checkmalloc(head);
 	while (1)
 	{
 		input = readline("Minishell$ ");
@@ -39,16 +42,18 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			// When ctrl + D is pushed, this will put out the message that it has stopped.
 			ft_putendl_fd("exit", 1);
+			rl_clear_history();
 			exit(0);
 		}
 		if (input && *input)
 			add_history(input);
-		head = ft_lexer(input);
-		ft_expander(head->next, env);
+		ft_lexer(head, input);
+		// ft_expander(head->next, env);
 		// command = ft_parser(head, en);
 		print_list(head);
+		while(head->next)
+			ft_token_del(head->next);
 		free(input);
-		input = NULL;
 	}
 	return (0);
 }

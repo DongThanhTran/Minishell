@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 19:23:28 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/02 16:50:35 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/03 19:06:07 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,18 @@ void	ft_token_add_back(t_token *token, t_token *new)
 	temp->next = new;
 	new->prev = temp;
 	new->next = NULL;
+}
+
+t_token	*ft_init_token(void)
+{
+	t_token	*head;
+
+	head = malloc(sizeof(t_token));
+	if (!head)
+		return (NULL);
+	head->next = NULL;
+	head->prev = NULL;
+	head->value = NULL;
+	head->token_type = begin;
+	return (head);
 }

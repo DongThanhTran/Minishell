@@ -6,13 +6,13 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:42:11 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/02 18:29:17 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/03 17:32:37 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int g_exitcode;
+int	g_exitcode;
 
 int	ft_syntax_error(char *str)
 {
