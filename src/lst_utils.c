@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 19:23:28 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/03 19:06:07 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/03 21:04:25 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ t_token	*ft_init_token(void)
 	head->next = NULL;
 	head->prev = NULL;
 	head->value = NULL;
+	head->len = 0;
 	head->token_type = begin;
 	return (head);
 }

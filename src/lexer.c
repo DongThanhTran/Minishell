@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:54:51 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/03 19:34:12 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/03 20:00:35 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ static t_token	*ft_symbol_token(char *prompt)
 	token = malloc(sizeof(t_token));
 	ft_checkmalloc(token);
 	type = get_type(*prompt);
+	if (type == dollar)
+		length += dollar_len(&prompt[1]);
 	if (type == tab || type == space)
 		while (prompt[length] == ' ' || prompt[length] == '\t')
 			length++;
-	if (type == dollar)
-		length += dollar_len(&prompt[1]);
 	if ((type == inf && prompt[1] == '<') || (type == outf && prompt[1] == '>'))
 	{
 		length++;
@@ -78,8 +78,7 @@ static t_token	*ft_word_token(char *prompt)
 
 	idx = 0;
 	new = malloc(sizeof(t_token));
-	if (!new)
-		return (NULL);
+	ft_checkmalloc(new);
 	new->token_type = word;
 	while (!ft_strchr(SYMBOLS, prompt[idx]))
 		idx++;

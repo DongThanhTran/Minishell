@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/10/02 18:39:59 by dtran         ########   odam.nl          #
+#    Updated: 2022/10/03 20:55:58 by dtran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,7 @@ all: message libft $(NAME)
 
 #===============================================================================: Main compile
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) $(LIBFT)/libft.a $(READLINE_DIRS) $(READLINE) -o $(NAME)
+	@$(CC) $(OBJS) $(HEADERS) -fsanitize=address $(LIBFT)/libft.a $(READLINE_DIRS) $(READLINE) -o $(NAME)
 	@printf "$(GREEN)✅Executable \"$(NAME)\" created!$(RESET)\n\n"
 
 #===============================================================================: C file compile

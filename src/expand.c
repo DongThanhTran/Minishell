@@ -6,18 +6,12 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 12:38:49 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/03 17:37:06 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/03 21:04:53 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-/*
-1. spaces toevoegen aan de enum
-2. daarna expand dollar functie testen bij input " $LANG "
-3. als de input geen closing quote heeft abort het programma. fix it
-
-*/
 static void	ft_expand_dollar(t_token *token, t_env *env)
 {
 	char	*str;
@@ -43,33 +37,34 @@ static void	ft_expand_dollar(t_token *token, t_env *env)
 	// 	token->value = ft_strjoin(str, token->next->value);
 	// 	free(str);
 	// 	ft_token_del(token->next);
+	// 	printf("\nCHECK TOKEN VAL: %s\n", token->value);
 	// }
 }
 
+static void	ft_join_strs(t_token *token)
+{
+	char	*tmp;
 
-// static void	ft_join_strs(t_token *token)
-// {
-// 	char	*tmp;
-
-// 	while (token)
-// 	{
-// 		if (token->token_type == word && token->next && \
-// 			token->next->token_type == word)
-// 		{
-// 			tmp = token->value;
-// 			token->value = ft_strjoin(token->value, token->next->value);
-// 			free(tmp);
-// 			ft_remove_token(token->next);
-// 			token = token->prev;
-// 		}
-// 		if (token->token_type == newline)
-// 		{
-// 			token = token->prev;
-// 			ft_token_del(token->next);
-// 		}
-// 		token = token->next;
-// 	}
-// }
+	while (token)
+	{
+		if (token->token_type == word && token->next && \
+			token->next->token_type == word)
+		{
+			tmp = token->value;
+			token->value = ft_strjoin(token->value, token->next->value);
+			free(tmp);
+			ft_token_del(token->next);
+			token = token->prev;
+		}
+		if (token->token_type == space || token->token_type == tab \
+			|| token->token_type == newline)
+		{
+			token = token->prev;
+			ft_token_del(token->next);
+		}
+		token = token->next;
+	}
+}
 
 static int	ft_quotes_expander(t_token *token, t_token_type type, t_env *env)
 {
@@ -95,13 +90,28 @@ static int	ft_quotes_expander(t_token *token, t_token_type type, t_env *env)
 	return (0);
 }
 
+/*
+	set delimiter veranderd de dollar teken naar een word teken,
+	zodat dollar expand het niet aanpast
+	Voorbeeld: <<$LANG (MOET $LANG BLIJVEN EN NIET DE ENV WAARDEN PAKKEN)
+*/
+static void	ft_set_delimiter(t_token *token)
+{
+	if (token->next && token->next->token_type == dollar)
+		token->next->token_type = word;
+	if (token->next && token->next->token_type == space
+		&& token->next->next && token->next->next->token_type == dollar)
+		token->next->next->token_type = word;
+}
+
 int	ft_expander(t_token *head, t_env *env)
 {
 	t_token	*token;
 	int		error;
 
 	token = head;
-	printf("value = %s\n", token->value);
+	error = 0;
+
 	while (token)
 	{
 		if (token->token_type == quote)
@@ -110,12 +120,12 @@ int	ft_expander(t_token *head, t_env *env)
 			error = ft_quotes_expander(token, dquote, env);
 		if (token->token_type == dollar)
 			ft_expand_dollar(token, env);
-		// if (token->token_type == here_doc)
-		// 	ft_check(token);
+		if (token->token_type == here_doc)
+			ft_set_delimiter(token);
 		if (error)
 			return (error);
 		token = token->next;
 	}
-	// ft_join_strs(head);
+	ft_join_strs(head);
 	return (0);
 }
