@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/03 19:08:01 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/08 16:26:08 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,9 @@ int		ft_syntax_error(char *str);
 void	ft_token_add_back(t_token *token, t_token *new);
 void	ft_token_del(t_token *token);
 t_token	*ft_init_token(void);
+
+// pre-parser
+int		ft_pre_parser(t_token *token);
 
 // parser
 

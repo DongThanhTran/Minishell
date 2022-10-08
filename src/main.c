@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 16:32:02 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/03 21:03:23 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/08 18:31:54 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ int	main(int argc, char *argv[], char *envp[])
 		}
 		if (input && *input)
 			add_history(input);
-		ft_lexer(head, input);
-		ft_expander(head->next, env);
-		print_list(head);
+		ft_lexer(head, input);		
+		if (ft_expander(head->next, env))
+			if (!ft_pre_parser(head))
+			// 	printf("HELLLo");
 		// command = ft_parser(head, en);
-		while(head->next)
+		while (head->next)
 			ft_token_del(head->next);
 		free(input);
 	}

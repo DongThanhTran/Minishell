@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 12:38:49 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/03 21:04:53 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/08 18:14:37 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ static int	ft_quotes_expander(t_token *token, t_token_type type, t_env *env)
 		return (ft_syntax_error("missing closing (d)quote"));
 	while (token->next->token_type != type)
 	{
-		if (type == dquote && token->next->token_type == dollar)
+		if (type == dquote && token->next->token_type == dollar && \
+			token->next->value[1] != '\0')
 			ft_expand_dollar(token->next, env);
 		tmp = token->value;
 		token->value = ft_strjoin(token->value, token->next->value);
@@ -111,14 +112,13 @@ int	ft_expander(t_token *head, t_env *env)
 
 	token = head;
 	error = 0;
-
 	while (token)
 	{
 		if (token->token_type == quote)
 			error = ft_quotes_expander(token, quote, env);
 		if (token->token_type == dquote)
 			error = ft_quotes_expander(token, dquote, env);
-		if (token->token_type == dollar)
+		if (token->token_type == dollar && token->value[1] != '\0')
 			ft_expand_dollar(token, env);
 		if (token->token_type == here_doc)
 			ft_set_delimiter(token);
@@ -127,5 +127,5 @@ int	ft_expander(t_token *head, t_env *env)
 		token = token->next;
 	}
 	ft_join_strs(head);
-	return (0);
+	return (1);
 }
