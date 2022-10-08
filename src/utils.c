@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:42:11 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/08 16:38:45 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/08 21:51:14 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,20 @@ int	ft_syntax_error(char *str)
 	ft_putstr_fd("minishell: syntax error: ", 2);
 	ft_putendl_fd(str, 2);
 	return (-1);
+}
+
+int	ft_len_process(t_token *token)
+{
+	int	len;
+
+	len = 0;
+	while (token->next && token->next->token_type != pipe_char)
+	{
+		len++;
+		token = token->next;
+	}
+	printf("TOKEN: %s", token->value);
+	return (len);
 }
 
 int	ft_name_len(char *str)
