@@ -22,18 +22,29 @@ int	ft_syntax_error(char *str)
 	return (-1);
 }
 
-int	ft_len_process(t_token *token)
+int	ft_len_process(t_token **token)
 {
 	int	len;
 
 	len = 0;
-	while (token->next && token->next->token_type != pipe_char)
+	while ((*token)->next && (*token)->next->token_type != pipe_char)
 	{
 		len++;
-		token = token->next;
+		(*token) = (*token)->next;
 	}
-	printf("TOKEN: %s", token->value);
 	return (len);
+}
+
+void	ft_free_all(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (!arr)
+		return ;
+	while(arr[i])
+		free(arr[i++])
+	free(arr);
 }
 
 int	ft_name_len(char *str)

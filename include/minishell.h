@@ -74,7 +74,8 @@ void	init_signals(void);
 // utils
 int		ft_name_len(char *str);
 int		ft_syntax_error(char *str);
-int		ft_len_process(t_token *token);
+int		ft_len_process(t_token **token);
+void	ft_free_all(char **arr);
 
 // list utils
 void	ft_token_add_back(t_token *token, t_token *new);
@@ -83,6 +84,9 @@ t_token	*ft_init_token(void);
 
 // pre-parser
 int		ft_pre_parser(t_token *token);
+
+// heredoc
+int		ft_ex_heredoc(t_token *token, int fd);
 
 // parser
 void	ft_parser(t_token *tokens);

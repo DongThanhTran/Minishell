@@ -48,9 +48,9 @@ int	main(int argc, char *argv[], char *envp[])
 		if (input && *input)
 			add_history(input);
 		ft_lexer(head, input);
-		if (ft_expander(head->next, env))
+		if (ft_expander(head, env))
 			if (ft_pre_parser(head))
-				ft_parser(head->next);
+				ft_parser(head);
 		// command = ft_parser(head, en);
 		while (head->next)
 			ft_token_del(head->next);

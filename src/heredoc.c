@@ -1,0 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        ::::::::            */
+/*   heredoc.c                                          :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2022/10/10 23:38:06 by mlammert      #+#    #+#                 */
+/*   Updated: 2022/10/10 23:38:06 by mlammert      ########   odam.nl         */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../minishell.h"
+
+int ft_ex_heredoc(t_token *token, int fd)
+{
+    token = token->prev;
+    ft_token_del(token->next);
+    token = token->next;
+    
+}

@@ -47,6 +47,7 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				expand \
 				parser \
 				pre_parser \
+				heredoc \
 				utils \
 				lst_utils \
 				main))
