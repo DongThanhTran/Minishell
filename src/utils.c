@@ -6,17 +6,18 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/09/07 23:42:11 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/08 21:51:14 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/11 21:19:51 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-int	g_exitcode;
+#include "../minishell.h"=
 
 int	ft_syntax_error(char *str)
 {
-	g_exitcode = 2;
+	t_shell_data	*sd;
+
+	sd = get_sd();
+	sd->exit_code = 2;
 	ft_putstr_fd("minishell: syntax error: ", 2);
 	ft_putendl_fd(str, 2);
 	return (-1);

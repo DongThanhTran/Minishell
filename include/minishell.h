@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/08 21:51:22 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/11 21:52:54 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,28 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-// Environment
+// Environment in list
 typedef struct s_env {
 	char			*key;
 	char			*value;
 	struct s_env	*next;
 }	t_env;
+
+// shell data
+typedef struct s_shell_data {
+	int		exit_code;
+	char	**env;
+	char	*pwd;
+	int		env_lines_number;
+	int		active_processes;
+}	t_shell_data;
+
+// typedef struct s_program_data
+// {
+// 	char	**env;
+// 	int		last_exit_status;
+// 	int		heredoc_sigint;
+// }			t_program_data;
 
 // env
 t_env	*set_env(char **envp);

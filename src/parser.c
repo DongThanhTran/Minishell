@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/08 21:50:51 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/11 21:14:29 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**ft_parse_tokens(t_token *token)
 	len = ft_len_process(&token);
 	res = malloc(sizeof(*res) * (len + 1));
 	if (!res)
-		exit(EXIT_FAILURE)
+		exit(EXIT_FAILURE);
 	res[len] = NULL;
 	while (len--)
 	{
