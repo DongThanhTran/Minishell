@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-t_shell_data	*obtain_sd(void)
+t_shell_data	*obtain_sd(t_env *env)
 {
 	static t_shell_data	sd;
 
@@ -20,7 +20,7 @@ t_shell_data	*obtain_sd(void)
 		return (&sd);
 	env_copy(&sd);
 	sd.pwd = obtain_cwd(sd.pwd, 0);
-	shell_lvl();
+	shell_lvl(env);
 	return (NULL);
 }
 
@@ -53,8 +53,13 @@ void	env_copy(t_shell_data *sd)
 		sd->env = ft_strdup(environ[idx]);
 }
 
-void	shell_lvl(void)
+void	shell_lvl(t_env *env)
 {
+	char	*value;
+	int		shlvl;
 
+	shlvl = 0;
+	value = ft_retrieve_env("SHLVL", env);
+	unset_env("SHLVL", env);
+	// Finish this part..
 }
-

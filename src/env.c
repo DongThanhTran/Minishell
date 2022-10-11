@@ -86,6 +86,18 @@ char	*ft_get_env(t_token *token, t_env *env)
 	return (ft_strdup(tmp->value));
 }
 
+char	*ft_retrieve_env(char *key, t_env *env)
+{
+	int					len;
+
+	len = ft_strlen(key);
+	while (env && (ft_strncmp(env->key, key, len) != 0))
+		env = env->next;
+	if (!env)
+		return (NULL);
+	return (ft_strdup(env->value));
+}
+
 t_env	*set_env(char **envp)
 {
 	t_env	*env;
