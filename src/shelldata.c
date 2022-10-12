@@ -6,19 +6,20 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 21:26:00 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/12 11:48:31 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 12:06:00 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // TO_DO
-//1. finish shell_lvl
-//2. make obtain_cwd
+//1. finish shell_lvl (FINISHED)
+//2. make obtain_cwd (FINISHED)
 //3. unset_env
 //4. unset_var
-//5. test functies waar *env bij toe is gevoegd
-//6. ft_parser afmaken
+//5. env_add maken in export.
+//6. test functies waar *env bij toe is gevoegd
+//7. ft_parser afmaken
 t_shell_data	*obtain_sd(t_env *env)
 {
 	static t_shell_data	sd;
@@ -26,7 +27,7 @@ t_shell_data	*obtain_sd(t_env *env)
 	if (sd.env)
 		return (&sd);
 	env_copy(&sd);
-	// sd.pwd = obtain_cwd(sd.pwd, 0);
+	sd.pwd = getcwd(sd.pwd, 0);
 	shell_lvl(env);
 	return (NULL);
 }
@@ -63,10 +64,22 @@ void	env_copy(t_shell_data *sd)
 void	shell_lvl(t_env *env)
 {
 	char	*value;
+	char	*new_lvl;
 	int		shlvl;
 
 	shlvl = 0;
 	value = ft_retrieve_env("SHLVL", env);
 	unset_env("SHLVL", env);
-	// Finish this part..
+	if (!value)
+		shlvl = ft_atoi(value);
+	free (value);
+	value = ft_itoa(shlvl + 1);
+	if (!value)
+		exit (EXIT_FAILURE);
+	new_lvl = ft_strjoin("SHLVL=", value);
+	if (!new_lvl)
+		exit(EXIT_FAILURE);
+	free (value);
+	env_add(new_lvl);
+	free (new_lvl);
 }
