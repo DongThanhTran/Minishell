@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 12:38:49 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/08 18:14:37 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 11:31:19 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 static void	ft_expand_dollar(t_token *token, t_env *env)
 {
-	char	*str;
+	char			*str;
+	t_shell_data	*sd;
 
+	sd = obtain_sd(env);
 	token->token_type = word;
 	if (token->value[1] != '?')
 	{
@@ -29,7 +31,7 @@ static void	ft_expand_dollar(t_token *token, t_env *env)
 	else if (token->value[1] == '?')
 	{
 		free(token->value);
-		token->value = ft_itoa(g_exitcode);
+		token->value = ft_itoa(sd->exit_code);
 	}
 	// if (token->next && token->next->token_type == word)
 	// {
@@ -74,7 +76,7 @@ static int	ft_quotes_expander(t_token *token, t_token_type type, t_env *env)
 	free(token->value);
 	token->value = ft_strdup("");
 	if (!token->next)
-		return (ft_syntax_error("missing closing (d)quote"));
+		return (ft_syntax_error("missing closing (d)quote", env));
 	while (token->next->token_type != type)
 	{
 		if (type == dquote && token->next->token_type == dollar && \
@@ -85,7 +87,7 @@ static int	ft_quotes_expander(t_token *token, t_token_type type, t_env *env)
 		free(tmp);
 		ft_token_del(token->next);
 		if (!token->next)
-			return (ft_syntax_error("missing closing (d)quote"));
+			return (ft_syntax_error("missing closing (d)quote", env));
 	}
 	ft_token_del(token->next);
 	return (0);

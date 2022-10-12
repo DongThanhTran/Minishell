@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 16:32:02 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/08 21:24:03 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 11:37:02 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ int	main(int argc, char *argv[], char *envp[])
 		if (input && *input)
 			add_history(input);
 		ft_lexer(head, input);
-		if (ft_expander(head, env))
-			if (ft_pre_parser(head))
-				ft_parser(head);
+		if (ft_expander(head->next, env))
+			if (ft_pre_parser(head, env))
+				ft_parser(head->next);
 		// command = ft_parser(head, en);
 		while (head->next)
 			ft_token_del(head->next);

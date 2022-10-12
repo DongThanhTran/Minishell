@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/11 21:52:54 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 11:42:55 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include <signal.h>
 # include <stdbool.h>
 # include <libft.h>
-
-extern int	g_exitcode;
 
 // Token definitions
 typedef enum e_token_type
@@ -77,37 +75,47 @@ typedef struct s_shell_data {
 // }			t_program_data;
 
 // env
-t_env	*set_env(char **envp);
-t_env	*clear_env(t_env *env);
-char	*ft_get_env(t_token *token, t_env *env);
+t_env			*set_env(char **envp);
+t_env			*clear_env(t_env *env);
+char			*ft_get_env(t_token *token, t_env *env);
+char			*ft_retrieve_env(char *key, t_env *env);
 
 // lexer
-void	ft_lexer(t_token *head, char *prompt);
+void			ft_lexer(t_token *head, char *prompt);
 
 // sigs
-void	init_signals(void);
+void			init_signals(void);
 
 // utils
-int		ft_name_len(char *str);
-int		ft_syntax_error(char *str);
-int		ft_len_process(t_token **token);
-void	ft_free_all(char **arr);
+int				ft_name_len(char *str);
+int				ft_syntax_error(char *str, t_env *env);
+int				ft_len_process(t_token **token);
+void			ft_free_all(char **arr);
 
 // list utils
-void	ft_token_add_back(t_token *token, t_token *new);
-void	ft_token_del(t_token *token);
-t_token	*ft_init_token(void);
+void			ft_token_add_back(t_token *token, t_token *new);
+void			ft_token_del(t_token *token);
+t_token			*ft_init_token(void);
 
 // pre-parser
-int		ft_pre_parser(t_token *token);
+int				ft_pre_parser(t_token *token, t_env *env);
 
 // heredoc
-int		ft_ex_heredoc(t_token *token, int fd);
+int				ft_ex_heredoc(t_token *token, int *fd);
+
+// shell data
+t_shell_data	*obtain_sd(t_env *env);
+int				clear_sd(t_env *env);
+void			env_copy(t_shell_data *sd);
+void			shell_lvl(t_env *env);
+
+// Unset
+void			unset_env(char *val, t_env *env);
 
 // parser
-void	ft_parser(t_token *tokens);
+void			ft_parser(t_token *tokens);
 
 // expander
-int		ft_expander(t_token *head, t_env *env);
+int				ft_expander(t_token *head, t_env *env);
 
 #endif

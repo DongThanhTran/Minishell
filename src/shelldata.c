@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 21:26:00 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/11 21:56:29 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 11:40:57 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ t_shell_data	*obtain_sd(t_env *env)
 	if (sd.env)
 		return (&sd);
 	env_copy(&sd);
-	sd.pwd = obtain_cwd(sd.pwd, 0);
+	// sd.pwd = obtain_cwd(sd.pwd, 0);
 	shell_lvl(env);
 	return (NULL);
 }
 
-int	clear_sd(void)
+int	clear_sd(t_env *env)
 {
 	t_shell_data	*sd;
 	int				exit;
 
-	sd = obtain_sd();
+	sd = obtain_sd(env);
 	exit = sd->exit_code;
 	ft_free_all(sd->env);
 	free(sd->pwd);
@@ -47,10 +47,10 @@ void	env_copy(t_shell_data *sd)
 	sd->env_lines_number = idx;
 	sd->env = malloc(sizeof(char *) * (idx + 1));
 	if (!sd->env)
-		return (NULL);
+		return ;
 	sd->env[idx] = NULL;
 	while (idx--)
-		sd->env = ft_strdup(environ[idx]);
+		sd->env[idx] = ft_strdup(environ[idx]);
 }
 
 void	shell_lvl(t_env *env)

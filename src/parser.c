@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/11 21:14:29 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 11:23:18 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,20 +31,21 @@ char	**ft_parse_tokens(t_token *token)
 	return (res);
 }
 
-void	ft_set_fds(t_token *token, int fds[2])
+int	ft_set_fds(t_token *token, int fds[2])
 {
-	t_token 	 *temp;
-	t_token_type type;
-	int			 err;
+	t_token			*temp;
+	t_token_type	type;
+	int				err;
 
 	err = 0;
 	while (token->next)
 	{
 		temp = token->next;
-		type = token->type;
-		if (type === here_doc)
-			return (ft_ex_heredoc(next, &fds[0]));
+		type = token->token_type;
+		if (type == here_doc)
+			return (ft_ex_heredoc(temp, &fds[0]));
 	}
+	return (0);
 }
 
 void	ft_parser(t_token *tokens)
@@ -55,6 +56,6 @@ void	ft_parser(t_token *tokens)
 	fd[0] = STDIN_FILENO;
 	command = ft_parse_tokens(tokens);
 
-	free_all(command);
+	ft_free_all(command);
 	exit(1);
 }

@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/10/08 21:21:47 by dtran         ########   odam.nl          #
+#    Updated: 2022/10/12 11:43:08 by dtran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				expand \
 				parser \
 				pre_parser \
+				shelldata \
 				heredoc \
+				unset \
 				utils \
 				lst_utils \
 				main))

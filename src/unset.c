@@ -6,14 +6,16 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 22:56:12 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/11 22:56:12 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/10/12 11:43:22 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void    unset_env(char *env, t_env *env)
+void	unset_env(char *val, t_env *env)
 {
+	(void)val;
+	(void)env;
     // t_shell_data    *sd;
     // char			*str;
 	// int				len;
