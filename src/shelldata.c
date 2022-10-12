@@ -6,12 +6,19 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 21:26:00 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/12 11:40:57 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 11:48:31 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// TO_DO
+//1. finish shell_lvl
+//2. make obtain_cwd
+//3. unset_env
+//4. unset_var
+//5. test functies waar *env bij toe is gevoegd
+//6. ft_parser afmaken
 t_shell_data	*obtain_sd(t_env *env)
 {
 	static t_shell_data	sd;

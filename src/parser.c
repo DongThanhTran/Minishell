@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/12 11:23:18 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 11:50:58 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	ft_parser(t_token *tokens)
 
 	fd[0] = STDIN_FILENO;
 	command = ft_parse_tokens(tokens);
-
 	ft_free_all(command);
 	exit(1);
 }
