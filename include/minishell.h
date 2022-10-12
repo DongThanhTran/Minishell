@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/12 11:42:55 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 19:25:03 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,6 @@ typedef struct s_shell_data {
 	int		env_lines_number;
 	int		active_processes;
 }	t_shell_data;
-
-// typedef struct s_program_data
-// {
-// 	char	**env;
-// 	int		last_exit_status;
-// 	int		heredoc_sigint;
-// }			t_program_data;
 
 // env
 t_env			*set_env(char **envp);

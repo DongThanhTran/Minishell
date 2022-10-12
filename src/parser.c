@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/12 11:50:58 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/12 20:32:14 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ int	ft_set_fds(t_token *token, int fds[2])
 		type = token->token_type;
 		if (type == here_doc)
 			return (ft_ex_heredoc(temp, &fds[0]));
+		// NEEDS MORE CODE
 	}
 	return (0);
 }
