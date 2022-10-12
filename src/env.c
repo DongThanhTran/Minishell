@@ -47,7 +47,7 @@ static int	set_env_key_var(t_env *env, char *env_str)
 		free(env);
 		return (0);
 	}
-	ft_memcpy(env->key, env_str, len1);
+	ft_memcpy(env->key, env_str, (len1 + 1));
 	ft_memcpy(env->value, (env_str + len1 + 1), len2);
 	return (1);
 }
@@ -79,7 +79,7 @@ char	*ft_get_env(t_token *token, t_env *env)
 	t_env	*tmp;
 
 	tmp = env;
-	while (tmp && (ft_strncmp(&token->value[1], tmp->key, token->len) != 0))
+	while (tmp && (ft_strncmp(&token->value[1], tmp->key, (token->len - 1)) != 0))
 		tmp = tmp->next;
 	if (!tmp)
 		return (NULL);

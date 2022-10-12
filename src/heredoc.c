@@ -15,7 +15,7 @@
 int	ft_ex_heredoc(t_token *token, int *fd)
 {
 	fd = 0;
-
+	(void)fd;
 	token = token->prev;
 	ft_token_del(token->next);
 	token = token->next;

@@ -18,7 +18,7 @@ t_shell_data	*obtain_sd(t_env *env)
 
 	if (sd.env)
 		return (&sd);
-	copy_env(&sd, env);
+	// env_copy(&sd, env);
 	sd.pwd = getcwd(sd.pwd, 0);
 	shell_lvl(env);
 	return (NULL);
@@ -36,22 +36,22 @@ int	clear_sd(t_env *env)
 	return (exit);
 }
 
-void	env_copy(t_shell_data *sd, t_env *env)
-{
-	extern char	**environ;
-	int			idx;
+// void	env_copy(t_shell_data *sd, t_env *env)
+// {
+// 	extern char	**environ;
+// 	int			idx;
 
-	idx = 0;
-	while (environ[idx])
-		idx++;
-	sd->env_lines_number = idx;
-	sd->env = malloc(sizeof(char *) * (idx + 1));
-	if (!sd->env)
-		return ;
-	sd->env[idx] = NULL;
-	while (idx--)
-		sd->env[idx] = ft_strdup(environ[idx]);
-}
+// 	idx = 0;
+// 	while (environ[idx])
+// 		idx++;
+// 	sd->env_lines_number = idx;
+// 	sd->env = malloc(sizeof(char *) * (idx + 1));
+// 	if (!sd->env)
+// 		return ;
+// 	sd->env[idx] = NULL;
+// 	while (idx--)
+// 		sd->env[idx] = ft_strdup(environ[idx]);
+// }
 
 void	shell_lvl(t_env *env)
 {

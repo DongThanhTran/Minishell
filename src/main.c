@@ -40,7 +40,6 @@ int	main(int argc, char *argv[], char *envp[])
 		input = readline("Minishell$ ");
 		if (!input)
 		{
-			// When ctrl + D is pushed, this will put out the message that it has stopped.
 			ft_putendl_fd("exit", 1);
 			rl_clear_history();
 			exit(0);

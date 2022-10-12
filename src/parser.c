@@ -35,9 +35,9 @@ int	ft_set_fds(t_token *token, int fds[2])
 {
 	t_token			*temp;
 	t_token_type	type;
-	int				err;
+	// int				err;
 
-	err = 0;
+	// err = 0;
 	while (token->next)
 	{
 		temp = token->next;

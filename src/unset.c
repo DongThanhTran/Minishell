@@ -14,23 +14,25 @@
 
 void	unset_env(char *key, t_env *env)
 {
-	t_env			*tmp;
-	char			*str;
-	int				len;
-	int				i;
+	(void)key;
+	(void)env;
+	// t_env			*tmp;
+	// char			*str;
+	// int				len;
+	// int				i;
 
-	len = ft_strlen(key);
-	tmp = env;
-	while (tmp && ft_strncmp(tmp->key, key, len) != 0)
-		tmp = tmp->next;
-	if (!tmp)
-		return ;
-	while (env->next != tmp)
-		env = env->next;
-	env->next = tmp ->next;
-	free(tmp->key);
-	free(tmp->value);
-	free(tmp);
+	// len = ft_strlen(key);
+	// tmp = env;
+	// while (tmp && ft_strncmp(tmp->key, key, len) != 0)
+	// 	tmp = tmp->next;
+	// if (!tmp)
+	// 	return ;
+	// while (env->next != tmp)
+	// 	env = env->next;
+	// env->next = tmp ->next;
+	// free(tmp->key);
+	// free(tmp->value);
+	// free(tmp);
 }
 
 /*
