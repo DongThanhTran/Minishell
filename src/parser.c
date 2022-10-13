@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/13 22:40:51 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/13 22:59:22 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,27 @@ int	ft_set_fds(t_token *token, int fds[2])
 		type = token->token_type;
 		if (type == here_doc)
 			return (ft_ex_heredoc(temp, &fds[0]));
-		// NEEDS MORE CODE
+		else
+			token = token->next;
 	}
 	return (0);
+}
+
+int	ft_get_pipe(int *fd)
+{
+	int	pipefds[2];
+	int	err;
+
+	err = pipe(pipefds);
+	if (err < 0)
+		ft_error_exit("pipe call failed", EXIT_FAILURE);
+	if (*fd == STDOUT_FILENO)
+		*fd = pipefds[1];
+	else
+		err = close(pipefds[1]);
+		if (err < 0)
+			ft_error_exit("pipe close failed", EXIT_FAILURE);
+	return (pipefds[0]);
 }
 
 void	ft_parser(t_token *tokens)
