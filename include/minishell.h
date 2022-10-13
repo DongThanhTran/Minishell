@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/12 19:25:03 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/13 22:21:12 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,6 @@ int				ft_ex_heredoc(t_token *token, int *fd);
 // shell data
 t_shell_data	*obtain_sd(t_env *env);
 int				clear_sd(t_env *env);
-void			env_copy(t_shell_data *sd);
-void			shell_lvl(t_env *env);
 
 // Unset
 void			unset_env(char *val, t_env *env);

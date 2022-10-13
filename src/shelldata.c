@@ -6,22 +6,53 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 21:26:00 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/12 21:37:31 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/13 22:30:21 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_shell_data	*obtain_sd(t_env *env)
+static void	set_dpointer_env(t_env *env, t_shell_data *sd)
 {
-	static t_shell_data	sd;
+	t_env			*tmp;
+	int				len;
+	char			*str;
 
-	if (sd.env)
-		return (&sd);
-	// env_copy(&sd, env);
-	sd.pwd = getcwd(sd.pwd, 0);
-	shell_lvl(env);
-	return (NULL);
+	len = 0;
+	tmp = env;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		len++;
+	}
+	sd->env = malloc(sizeof(char *) * (len + 1));
+	sd->env[len] = NULL;
+	while (len--)
+	{
+		str = ft_strjoin(env->key, env->value);
+		sd->env[len] = str;
+		env = env->next;
+	}
+}
+
+static void	shell_lvl(t_env *env)
+{
+	char	*value;
+	int		shlvl;
+	int		len;
+
+	shlvl = 0;
+	len = ft_strlen("SHLVL=");
+	value = ft_retrieve_env("SHLVL=", env);
+	if (!value)
+		exit (EXIT_FAILURE); //niet zeker wat we moeten doen in deze situ
+	shlvl = ft_atoi(value);
+	free (value);
+	while (env && (ft_strncmp(env->key, "SHLVL=", len) != 0))
+		env = env->next;
+	env->value = ft_itoa(shlvl + 1);
+	if (env->value == NULL)
+		exit (EXIT_FAILURE);
 }
 
 int	clear_sd(t_env *env)
@@ -36,44 +67,14 @@ int	clear_sd(t_env *env)
 	return (exit);
 }
 
-// void	env_copy(t_shell_data *sd, t_env *env)
-// {
-// 	extern char	**environ;
-// 	int			idx;
-
-// 	idx = 0;
-// 	while (environ[idx])
-// 		idx++;
-// 	sd->env_lines_number = idx;
-// 	sd->env = malloc(sizeof(char *) * (idx + 1));
-// 	if (!sd->env)
-// 		return ;
-// 	sd->env[idx] = NULL;
-// 	while (idx--)
-// 		sd->env[idx] = ft_strdup(environ[idx]);
-// }
-
-void	shell_lvl(t_env *env)
+t_shell_data	*obtain_sd(t_env *env)
 {
-	char	*value;
-	int		shlvl;
-	t_env	*new;
+	static t_shell_data	sd;
 
-	shlvl = 0;
-	value = ft_retrieve_env("SHLVL", env);
-	unset_env("SHLVL", env);
-	if (!value)
-		shlvl = ft_atoi(value);
-	free (value);
-	value = ft_itoa(shlvl + 1);
-	if (!value)
-		exit (EXIT_FAILURE);
-	new = malloc(sizeof(t_env));
-	new->key = ft_strdup("SHLVL");
-	new->value = value;
-	new->next = NULL;
-	while (env->next)
-		env = env->next;
-	env->next = new;
-	free (value);
+	if (sd.env)
+		return (&sd);
+	set_dpointer_env(env, &sd);
+	sd.pwd = getcwd(sd.pwd, 0);
+	shell_lvl(env);
+	return (NULL);
 }

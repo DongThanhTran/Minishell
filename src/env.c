@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 17:32:11 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/12 21:48:49 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/13 22:23:33 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*ft_get_env(t_token *token, t_env *env)
 
 char	*ft_retrieve_env(char *key, t_env *env)
 {
-	int					len;
+	int	len;
 
 	len = ft_strlen(key);
 	while (env && (ft_strncmp(env->key, key, len) != 0))
