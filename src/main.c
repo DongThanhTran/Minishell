@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 16:32:02 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/13 22:30:32 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/16 19:14:16 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,33 @@ void	print_list(t_token *head)
 	}
 }
 
+char	*ft_prompt_check(char *prompt)
+{
+	char	*str;
+	int		len;
+
+	if (isatty(STDIN_FILENO))
+	{
+		str = readline(prompt);
+		if (str && *str)
+			add_history(str);
+	}
+	else
+	{
+		str = get_next_line(STDIN_FILENO);
+		if (!str)
+			return (NULL);
+		len = ft_strlen(str);
+		if (str[len - 1] == '\n')
+			str[len - 1] = 0;
+	}
+	return (str);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	char		*input;
-	// char		**command;
+	int			pipefd;
 	t_token		*head;
 	t_env		*env;
 
@@ -34,6 +57,7 @@ int	main(int argc, char *argv[], char *envp[])
 	init_signals();
 	env = set_env(envp);
 	head = ft_init_token();
+	obtain_sd(env);
 	ft_checkmalloc(head);
 	while (1)
 	{
@@ -47,9 +71,9 @@ int	main(int argc, char *argv[], char *envp[])
 		if (input && *input)
 			add_history(input);
 		ft_lexer(head, input);
-		if (ft_expander(head->next, env))
+		if (ft_expander(head, env))
 			if (ft_pre_parser(head, env))
-				ft_parser(head);
+				ft_parser(head, env, STDIN_FILENO);
 		// command = ft_parser(head, en);
 		while (head->next)
 			ft_token_del(head->next);

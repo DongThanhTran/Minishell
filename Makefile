@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/10/12 11:43:08 by dtran         ########   odam.nl          #
+#    Updated: 2022/10/16 19:50:42 by dtran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ RESET		= \033[0m
 #===============================================================================: Include files
 MINISHELL	= include
 LIBFT		= include/libft
+GNL			= include/get_next_line
 
 #===============================================================================: Compile variables
 CC			= gcc
@@ -37,7 +38,7 @@ INCLUDE_READLINE = -I $(BREW_DIR)/opt/readline/include
 READLINE_DIRS = -L $(LIB_READLINE) $(READLINE)
 RM			= rm -rf
 MKDIR		= mkdir -p objs
-HEADERS		= -I $(LIBFT) -I $(MINISHELL)
+HEADERS		= -I $(LIBFT) -I $(MINISHELL) -I $(GNL)
 
 #===============================================================================: Sourcefiles
 SRCS		= $(addprefix src/, $(addsuffix .c, \
@@ -51,15 +52,17 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				heredoc \
 				unset \
 				utils \
+				utils2 \
+				builtin \
 				lst_utils \
 				main))
 
 #===============================================================================: Make commands
-all: message libft $(NAME)
+all: message libft gnl $(NAME)
 
 #===============================================================================: Main compile
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) $(LIBFT)/libft.a $(READLINE_DIRS) $(READLINE) -o $(NAME)
+	@$(CC) $(OBJS) $(HEADERS) $(LIBFT)/libft.a $(GNL)/get_next_line.a $(READLINE_DIRS) $(READLINE) -o $(NAME)
 	@printf "$(GREEN)✅Executable \"$(NAME)\" created!$(RESET)\n\n"
 
 #===============================================================================: C file compile
@@ -82,6 +85,10 @@ message:
 libft:
 	@$(MAKE) -C $(LIBFT)
 
+#===============================================================================: GNL Compile
+gnl:
+	@$(MAKE) -C $(GNL)
+
 #===============================================================================: Remove all object files
 clean:
 	@$(RM) objs/
@@ -92,6 +99,7 @@ fclean:
 	@$(RM) objs/
 	@$(RM) $(NAME)
 	@$(MAKE) -C $(LIBFT) fclean
+	@$(MAKE) -C $(GNL) fclean
 	@printf "$(RED)🧹Removed objects for \"$(NAME)\"!$(RESET)\n"
 	@printf "$(RED)🧹Removed \"$(NAME)\"!$(RESET)\n"
 
@@ -99,4 +107,4 @@ fclean:
 re: fclean all
 
 #===============================================================================: To not confuse make
-.PHONY: all, clean, fclean, re, message, run, libft
+.PHONY: all, clean, fclean, re, message, run, libft, gnl
