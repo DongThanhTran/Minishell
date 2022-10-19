@@ -123,4 +123,11 @@ void			ft_parser(t_token *tokens, t_env *env, int fd);
 // expander
 int				ft_expander(t_token *head, t_env *env);
 
+// Executor
+pid_t	ft_execute(char **args, int fds[2], t_env *env);
+
+// System calls
+int		ft_dup2(int fd_one, int fd_two);
+
+
 #endif

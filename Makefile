@@ -51,6 +51,7 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				shelldata \
 				heredoc \
 				unset \
+				systemcalls \
 				utils \
 				utils2 \
 				builtin \
