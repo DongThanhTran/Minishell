@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/16 19:49:34 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/21 21:21:07 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,16 @@ int				builtin_change(char **commands);
 int				builtin_unchange(char **command);
 
 // utils
-int				ft_name_len(char *str);
 int				ft_syntax_error(char *str, t_env *env);
 int				ft_len_process(t_token **token);
 void			ft_free_all(char **arr);
+int				ft_name_len(char *str);
 
 // utils2
 int				ft_close(int fildes);
 int				ft_pipe(int fildes[2]);
+int				ft_dup2(int fd_one, int fd_two);
+pid_t			ft_fork(t_env *env);
 
 // list utils
 void			ft_token_add_back(t_token *token, t_token *new);
@@ -125,9 +127,5 @@ int				ft_expander(t_token *head, t_env *env);
 
 // Executor
 pid_t	ft_execute(char **args, int fds[2], t_env *env);
-
-// System calls
-int		ft_dup2(int fd_one, int fd_two);
-
 
 #endif

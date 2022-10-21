@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/10/16 19:50:42 by dtran         ########   odam.nl          #
+#    Updated: 2022/10/21 20:55:26 by dtran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,6 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				shelldata \
 				heredoc \
 				unset \
-				systemcalls \
 				utils \
 				utils2 \
 				builtin \

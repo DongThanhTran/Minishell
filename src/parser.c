@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/16 19:51:30 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/21 21:04:32 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static int	ft_set_fds(t_env *env, t_token *token, int fd[2])
 	return (0);
 }
 
+// testen wanneer ft_parser moet stoppen met de while(1)
 void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 {
 	int		fd[2];
@@ -108,7 +109,7 @@ void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 		if (pipefd < 0)
 			return ;
 		command = ft_parse_tokens(tokens);
-		pid = ft_execute(command, fd);
+		pid = ft_execute(command, fd, env);
 		ft_free_all(command);
 		if (pipefd)
 		{
@@ -118,5 +119,4 @@ void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 		else
 			waitpid(pid, NULL, 0);
 	}
-	exit(1); // niet nodig
 }
