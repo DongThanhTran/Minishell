@@ -40,16 +40,13 @@ static unsigned char	ft_exit_atoi(char *str)
 
 static int	is_digits(char *str)
 {
-	int	i;
-
 	if (*str == '-')
 		str++;
-	i = 0;
-	while (str[i])
+	while (*str)
 	{
-		if (!ft_isdigit(str[i]))
+		if (!ft_isdigit(*str))
 			return (0);
-		i++;
+		str++;
 	}
 	return (1);
 }
