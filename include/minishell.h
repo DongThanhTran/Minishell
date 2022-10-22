@@ -129,4 +129,7 @@ int				ft_expander(t_token *head, t_env *env);
 // Executor
 pid_t			ft_execute(char **args, int fds[2], t_env *env);
 
+// Exit
+void			ft_exit(char **strs, t_env *env);
+
 #endif

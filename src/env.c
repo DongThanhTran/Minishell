@@ -73,7 +73,7 @@ static int	add_var(t_env **head, char *env_str)
 	tmp->next = new;
 	return (1);
 }
-
+// This does exactly the same as the function underneath..?
 char	*ft_get_env(t_token *token, t_env *env)
 {
 	t_env	*tmp;

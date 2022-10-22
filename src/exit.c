@@ -63,7 +63,7 @@ void	ft_exit(char **strs, t_env *env)
 		ft_putstr("exit\n");
 	if (!strs[1])
 		exit(sd->exit_code);
-	if (ft_strlen(strs[1]) > 19 || is_digits(strs[1]))
+	if (ft_strlen(strs[1]) > 19 || !is_digits(strs[1]))
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(strs[1], 2);
