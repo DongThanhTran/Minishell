@@ -6,11 +6,12 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 13:02:59 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/21 21:53:35 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/22 19:44:05 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <sys/stat.h>
 
 static int	ft_close_fds(int fds[2])
 {
@@ -21,9 +22,31 @@ static int	ft_close_fds(int fds[2])
 	return (0);
 }
 
-static char	*find_bin_path(char *str)
+static char	*find_path_local(char *str)
 {
+	struct stat	finfo;
 
+	if (!ft_strncmp(str, ".", 2))
+	{
+		ft_putendl_fd("minishell: .: filename argument required", 2);
+		ft_error_exit(".: usage: . filename [arguments]", 2);
+	}
+	stat(str, &finfo);
+	if (S_ISDIR(finfo.st_mode))
+	{
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(str, 2);
+		ft_error_exit(": is a directory", 128);
+	}
+	if (access(str, F_OK) < 0)
+	{
+		ft_putstr_fd("minishell: ", 2);
+		perror(str);
+		if (access(str, F_OK))
+			exit(128);
+		exit(126);
+	}
+	return (str);
 }
 
 static char	*ft_find_paths(char *command, char **paths)
@@ -38,7 +61,7 @@ static char	*ft_find_paths(char *command, char **paths)
 		free(paths[idx]);
 		paths[idx] = ft_strjoin(tmp, command);
 		free(tmp);
-		if (!acces(paths[idx], F_OK))
+		if (!access(paths[idx], F_OK))
 			return (ft_strdup(paths[idx]));
 		idx++;
 	}
@@ -48,10 +71,6 @@ static char	*ft_find_paths(char *command, char **paths)
 	exit(127);
 }
 
-// 1. Is opzoek naar het pad van de command
-// - Als path niet gevonden is in env (kan na unset(PATH) gebeuren, dan zoeken we naar de lokale versie in bin)
-// - via de functie find_bin_path()
- 
 static char	*ft_getpath(char *command, t_env *env)
 {
 	char	**paths;
@@ -63,7 +82,7 @@ static char	*ft_getpath(char *command, t_env *env)
 	{
 		path_from_env = ft_retrieve_env("PATH=", env);
 		if (!path_from_env)
-			return (find_bin_path(command));
+			return (find_path_local(command));
 		paths = ft_split(path_from_env, ':');
 		if (!paths)
 			ft_error_exit("split failed", EXIT_FAILURE);
@@ -71,19 +90,17 @@ static char	*ft_getpath(char *command, t_env *env)
 		ft_free_all(paths);
 	}
 	else
-		path = find_bin_path(command);
+		path = find_path_local(command);
 	return (path);
 }
 
-// HIER ZIJN WIJ
-// Made get_path and 
 pid_t	ft_execute(char **commands, int fds[2], t_env *env)
 {
 	t_shell_data	*sd;
 	pid_t			pid;
 	char			*path;
 
-	if (!*commands || builtin_change(commands))
+	if (!*commands || builtin_change(commands, env))
 		return (ft_close_fds(fds));
 	sd = obtain_sd(env);
 	pid = ft_fork(env);
@@ -91,11 +108,12 @@ pid_t	ft_execute(char **commands, int fds[2], t_env *env)
 	{
 		ft_dup2(fds[0], STDIN_FILENO);
 		ft_dup2(fds[1], STDOUT_FILENO);
-		if (builtin_unchange(*commands))
+		if (builtin_unchange(commands))
 			exit(EXIT_SUCCESS);
 		path = ft_getpath(*commands, env);
 		execve(path, commands, sd->env);
-		ft_error_exit("Minishell: Execve failed", EXIT_FAILURE);
+		perror("execve");
+		exit(EXIT_FAILURE);
 	}
 	ft_close_fds(fds);
 	return (pid);

@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/10/21 20:55:26 by dtran         ########   odam.nl          #
+#    Updated: 2022/10/22 21:47:47 by dtran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,8 +53,10 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				unset \
 				utils \
 				utils2 \
+				exec \
 				builtin \
 				lst_utils \
+				exit \
 				main))
 
 #===============================================================================: Make commands

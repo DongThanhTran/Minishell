@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/21 21:21:07 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/22 19:41:03 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
-# include <stdbool.h>
 # include <fcntl.h>
 # include <get_next_line.h>
 # include <libft.h>
@@ -86,7 +85,7 @@ void			ft_lexer(t_token *head, char *prompt);
 void			init_signals(void);
 
 // builtin funcs
-int				builtin_change(char **commands);
+int				builtin_change(char **commands, t_env *env);
 int				builtin_unchange(char **command);
 
 // utils
@@ -117,7 +116,9 @@ t_shell_data	*obtain_sd(t_env *env);
 int				clear_sd(t_env *env);
 
 // Unset
-void			unset_env(char *val, t_env *env);
+void			unset_env(char *key, t_env *env);
+void			unset(char **strs, t_env *env);
+
 
 // parser
 void			ft_parser(t_token *tokens, t_env *env, int fd);
@@ -126,6 +127,6 @@ void			ft_parser(t_token *tokens, t_env *env, int fd);
 int				ft_expander(t_token *head, t_env *env);
 
 // Executor
-pid_t	ft_execute(char **args, int fds[2], t_env *env);
+pid_t			ft_execute(char **args, int fds[2], t_env *env);
 
 #endif
