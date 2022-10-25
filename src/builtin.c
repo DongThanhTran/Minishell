@@ -23,8 +23,8 @@ int	builtin_change(char **commands, t_env *env)
 		unset(commands, env);
 	else if (!ft_strncmp(*commands, "exit", len))
 		ft_exit(commands, env);
-	// else if (!ft_strncmp(*commands, "export", len))
-	// 	ft_export(commands);
+	else if (!ft_strncmp(*commands, "export", len))
+		ft_export(commands, env);
 	// else if (!ft_strncmp(*commands, "cd", len))
 	// 	cd(commands[1]);
 	else

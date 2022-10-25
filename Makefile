@@ -56,6 +56,7 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				exec \
 				builtin \
 				lst_utils \
+				export \
 				exit \
 				main))
 

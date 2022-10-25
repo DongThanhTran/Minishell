@@ -77,6 +77,7 @@ t_env			*set_env(char **envp);
 t_env			*clear_env(t_env *env);
 char			*ft_get_env(t_token *token, t_env *env);
 char			*ft_retrieve_env(char *key, t_env *env);
+int				add_var(t_env **head, char *env_str);
 
 // lexer
 void			ft_lexer(t_token *head, char *prompt);
@@ -119,7 +120,6 @@ int				clear_sd(t_env *env);
 void			unset_env(char *key, t_env *env);
 void			unset(char **strs, t_env *env);
 
-
 // parser
 void			ft_parser(t_token *tokens, t_env *env, int fd);
 
@@ -131,5 +131,8 @@ pid_t			ft_execute(char **args, int fds[2], t_env *env);
 
 // Exit
 void			ft_exit(char **strs, t_env *env);
+
+// Export
+void			ft_export(char **commands, t_env *env);
 
 #endif

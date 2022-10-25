@@ -52,7 +52,7 @@ static int	set_env_key_var(t_env *env, char *env_str)
 	return (1);
 }
 
-static int	add_var(t_env **head, char *env_str)
+int	add_var(t_env **head, char *env_str)
 {
 	t_env	*tmp;
 	t_env	*new;
