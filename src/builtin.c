@@ -25,8 +25,8 @@ int	builtin_change(char **commands, t_env *env)
 		ft_exit(commands, env);
 	else if (!ft_strncmp(*commands, "export", len))
 		ft_export(commands, env);
-	// else if (!ft_strncmp(*commands, "cd", len))
-	// 	cd(commands[1]);
+	else if (!ft_strncmp(*commands, "cd", len))
+		cd(commands[1]);
 	else
 		return (0);
 	return (1);
