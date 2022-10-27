@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/22 19:41:03 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/27 20:17:01 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,5 +134,10 @@ void			ft_exit(char **strs, t_env *env);
 
 // Export
 void			ft_export(char **commands, t_env *env);
+
+// Cd
+void			ft_cd(char *path, t_env *env);
+
+// Sort_env
 
 #endif

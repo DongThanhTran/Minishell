@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/10/22 21:47:47 by dtran         ########   odam.nl          #
+#    Updated: 2022/10/27 20:01:34 by dtran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,7 @@ HEADERS		= -I $(LIBFT) -I $(MINISHELL) -I $(GNL)
 
 #===============================================================================: Sourcefiles
 SRCS		= $(addprefix src/, $(addsuffix .c, \
-				env \
+				set_env \
 				signal \
 				lexer \
 				expand \
@@ -58,6 +58,9 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				lst_utils \
 				export \
 				exit \
+				pwd \
+				cd \
+				sort_exp \
 				main))
 
 #===============================================================================: Make commands

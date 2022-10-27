@@ -6,12 +6,14 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 22:56:12 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/22 20:49:11 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/27 18:37:37 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//to do:
+// moeten na het unsetten van env, ook weer de char ** updaten.
 void	unset_env(char *key, t_env *env)
 {
 	t_env	*tmp;
