@@ -39,8 +39,8 @@ int	builtin_unchange(char **command)
 	if (!command)
 		return (0);
 	len = ft_strlen(*command) + 1;
-	// if (!ft_strncmp(*command, "echo", len))
-	// 	echo(command);
+	if (!ft_strncmp(*command, "echo", len))
+		ft_echo(command);
 	// else if (!ft_strncmp(*command, "env", len))
 	// 	env();
 	else if (!ft_strncmp(*command, "pwd", len))
