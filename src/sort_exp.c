@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 20:00:52 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/27 21:04:00 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/31 18:43:09 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ static int	number_of_env_lines(char **env)
 // hier checken we op de eerste letter van een line in de env
 static int	check_is_sorted(char **env)
 {
-	int	idx;
+	int	i;
 
-	idx = 0;
+	i = 0;
 	while (env[i])
 	{
 		if (env[i + 1] != NULL)
 			if (ft_strncmp(env[i][0], env[i + 1][0], ft_strlen(env[i])) > 0)
 				return (0);
-		idx++;
+		i++;
 	}
 	return (1);
 }

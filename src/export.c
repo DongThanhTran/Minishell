@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/25 20:12:08 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/27 22:00:05 by dtran         ########   odam.nl         */
+/*   Updated: 2022/10/31 18:54:14 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int	validate_export(char *command)
 	if (!pos || length != pos)
 	{
 		ft_putstr_fd("minishell: export: `", 2);
-		ft_putstr_fd(str, 2);
+		ft_putstr_fd(command, 2);
 		ft_putendl_fd("': not a valid identifier", 2);
 		return (0);
 	}
@@ -58,6 +58,7 @@ static void	ft_print_env(t_shell_data *sd)
 	int	i;
 
 	i = 0;
+	sort_env(sd->env);
 	while (sd->env[i])
 	{
 		ft_putstr_fd("declare -x ", 1);
@@ -85,10 +86,10 @@ void	ft_export(char **commands, t_env *env)
 		ft_print_env(sd);
 	while (commands[i])
 	{
-		length = validate_export(commands[idx]);
+		length = validate_export(commands[i]);
 		if (length)
 		{
-			sub = ft_substr(commands[idx], 0, length);
+			sub = ft_substr(commands[i], 0, length);
 			unset_env(commands, env);
 			free(sub);
 			add_var(&env, commands[i]);
@@ -98,3 +99,7 @@ void	ft_export(char **commands, t_env *env)
 		i++;
 	}
 }
+
+// remninder:
+// export a b c moet ik export wel opgeslagen worden en niet in env
+// export i=blabla moet het wel in env worden opgeslagen en ook in export
