@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/16 19:29:27 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/31 19:03:24 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/01 15:57:10 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	builtin_change(char **commands, t_env *env)
 	return (1);
 }
 
-int	builtin_unchange(char **command)
+int	builtin_unchange(char **command, t_env *env)
 {
 	size_t	len;
 
@@ -42,9 +42,9 @@ int	builtin_unchange(char **command)
 	if (!ft_strncmp(*command, "echo", len))
 		ft_echo(command);
 	else if (!ft_strncmp(*command, "env", len))
-		ft_env();
+		ft_env(env);
 	else if (!ft_strncmp(*command, "pwd", len))
-		ft_pwd();
+		ft_pwd(env);
 	else
 		return (0);
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/25 20:12:08 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/31 18:54:14 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/01 16:08:33 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	ft_export(char **commands, t_env *env)
 		if (length)
 		{
 			sub = ft_substr(commands[i], 0, length);
-			unset_env(commands, env);
+			unset_env(commands[i], env);
 			free(sub);
 			add_var(&env, commands[i]);
 		}

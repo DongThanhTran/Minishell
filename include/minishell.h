@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/27 20:17:01 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/01 16:22:46 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,6 @@ void			ft_lexer(t_token *head, char *prompt);
 // sigs
 void			init_signals(void);
 
-// builtin funcs
-int				builtin_change(char **commands, t_env *env);
-int				builtin_unchange(char **command);
-
 // utils
 int				ft_syntax_error(char *str, t_env *env);
 int				ft_len_process(t_token **token);
@@ -116,28 +112,26 @@ int				ft_ex_heredoc(t_env *env, t_token *token, int *fd);
 t_shell_data	*obtain_sd(t_env *env);
 int				clear_sd(t_env *env);
 
-// Unset
-void			unset_env(char *key, t_env *env);
-void			unset(char **strs, t_env *env);
-
 // parser
 void			ft_parser(t_token *tokens, t_env *env, int fd);
-
-// expander
-int				ft_expander(t_token *head, t_env *env);
 
 // Executor
 pid_t			ft_execute(char **args, int fds[2], t_env *env);
 
-// Exit
+// builtin funcs
+int				builtin_change(char **commands, t_env *env);
+int				builtin_unchange(char **command, t_env *env);
+
+//Built-ins
+void			unset_env(char *key, t_env *env);
+void			unset(char **strs, t_env *env);
+int				ft_expander(t_token *head, t_env *env);
 void			ft_exit(char **strs, t_env *env);
-
-// Export
 void			ft_export(char **commands, t_env *env);
-
-// Cd
 void			ft_cd(char *path, t_env *env);
-
-// Sort_env
+void			ft_echo(char **strs);
+void			ft_env(t_env *env);
+void			sort_env(char **env);
+void			ft_pwd(t_env *env);
 
 #endif

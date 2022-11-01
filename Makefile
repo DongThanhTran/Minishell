@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/10/27 20:01:34 by dtran         ########   odam.nl          #
+#    Updated: 2022/11/01 16:24:34 by dtran         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,6 +61,8 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				pwd \
 				cd \
 				sort_exp \
+				echo \
+				env \
 				main))
 
 #===============================================================================: Make commands
