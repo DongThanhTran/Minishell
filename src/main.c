@@ -6,11 +6,13 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 16:32:02 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/22 20:59:00 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/02 20:51:48 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+t_env *g_env;
 
 void	print_list(t_token *head)
 {
@@ -49,14 +51,13 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char		*input;
 	t_token		*head;
-	t_env		*env;
 
 	(void)argc;
 	(void)argv;
+	g_env = set_env(envp);
+	obtain_sd(g_env);
 	init_signals();
-	env = set_env(envp);
 	head = ft_init_token();
-	obtain_sd(env);
 	ft_checkmalloc(head);
 	while (1)
 	{
@@ -70,9 +71,9 @@ int	main(int argc, char *argv[], char *envp[])
 		if (input && *input)
 			add_history(input);
 		ft_lexer(head, input);
-		if (ft_expander(head, env))
-			if (ft_pre_parser(head, env))
-				ft_parser(head, env, STDIN_FILENO);
+		if (ft_expander(head))
+			if (ft_pre_parser(head))
+				ft_parser(head, g_env, STDIN_FILENO);
 		while (head->next)
 			ft_token_del(head->next);
 		free(input);

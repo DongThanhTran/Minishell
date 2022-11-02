@@ -6,22 +6,22 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 12:38:49 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/12 11:31:19 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/02 19:49:05 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	ft_expand_dollar(t_token *token, t_env *env)
+static void	ft_expand_dollar(t_token *token)
 {
 	char			*str;
 	t_shell_data	*sd;
 
-	sd = obtain_sd(env);
+	sd = obtain_sd(g_env);
 	token->token_type = word;
 	if (token->value[1] != '?')
 	{
-		str = ft_get_env(token, env);
+		str = ft_retrieve_env(&token->value[1], g_env);
 		free(token->value);
 		if (!str)
 			token->value = ft_strdup("");
@@ -33,14 +33,13 @@ static void	ft_expand_dollar(t_token *token, t_env *env)
 		free(token->value);
 		token->value = ft_itoa(sd->exit_code);
 	}
-	// if (token->next && token->next->token_type == word)
-	// {
-	// 	str = token->value;
-	// 	token->value = ft_strjoin(str, token->next->value);
-	// 	free(str);
-	// 	ft_token_del(token->next);
-	// 	printf("\nCHECK TOKEN VAL: %s\n", token->value);
-	// }
+	if (token->next && token->next->token_type == word)
+	{
+		str = token->value;
+		token->value = ft_strjoin(str, token->next->value);
+		free(str);
+		ft_token_del(token->next);
+	}
 }
 
 static void	ft_join_strs(t_token *token)
@@ -68,7 +67,7 @@ static void	ft_join_strs(t_token *token)
 	}
 }
 
-static int	ft_quotes_expander(t_token *token, t_token_type type, t_env *env)
+static int	ft_quotes_expander(t_token *token, t_token_type type)
 {
 	char	*tmp;
 
@@ -76,18 +75,18 @@ static int	ft_quotes_expander(t_token *token, t_token_type type, t_env *env)
 	free(token->value);
 	token->value = ft_strdup("");
 	if (!token->next)
-		return (ft_syntax_error("missing closing (d)quote", env));
+		return (ft_syntax_error("missing closing (d)quote"));
 	while (token->next->token_type != type)
 	{
 		if (type == dquote && token->next->token_type == dollar && \
 			token->next->value[1] != '\0')
-			ft_expand_dollar(token->next, env);
+			ft_expand_dollar(token->next);
 		tmp = token->value;
 		token->value = ft_strjoin(token->value, token->next->value);
 		free(tmp);
 		ft_token_del(token->next);
 		if (!token->next)
-			return (ft_syntax_error("missing closing (d)quote", env));
+			return (ft_syntax_error("missing closing (d)quote"));
 	}
 	ft_token_del(token->next);
 	return (0);
@@ -107,7 +106,7 @@ static void	ft_set_delimiter(t_token *token)
 		token->next->next->token_type = word;
 }
 
-int	ft_expander(t_token *head, t_env *env)
+int	ft_expander(t_token *head)
 {
 	t_token	*token;
 	int		error;
@@ -117,11 +116,11 @@ int	ft_expander(t_token *head, t_env *env)
 	while (token)
 	{
 		if (token->token_type == quote)
-			error = ft_quotes_expander(token, quote, env);
+			error = ft_quotes_expander(token, quote);
 		if (token->token_type == dquote)
-			error = ft_quotes_expander(token, dquote, env);
+			error = ft_quotes_expander(token, dquote);
 		if (token->token_type == dollar && token->value[1] != '\0')
-			ft_expand_dollar(token, env);
+			ft_expand_dollar(token);
 		if (token->token_type == here_doc)
 			ft_set_delimiter(token);
 		if (error)

@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/29 15:54:01 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/31 18:34:55 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/02 16:08:08 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	ft_echo(char **strs)
 	newline = ft_strncmp(strs[1], "-n", 3);
 	if (!newline)
 		idx++;
-	// while (!ft_strncmp(strs[idx], "-n", 3))
-	// 	idx++;
+	while (!ft_strncmp(strs[idx], "-n", 3))
+		idx++;
 	while (strs[idx])
 	{
 		ft_putstr(strs[idx]);

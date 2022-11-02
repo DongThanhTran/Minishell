@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 17:26:19 by dtran         #+#    #+#                 */
-/*   Updated: 2022/10/01 17:27:10 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/02 20:45:30 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,28 @@
 
 static void	sighandler(int signum)
 {
-	extern int	rl_done;
-	
-	// This signal is triggered by ctrl + backslash
-	// The subject says it shouldn't do anything. But there is an edge case i dont know yet..
-	// if (signum == SIGQUIT && false)
-	// {
-	// 	printf("HELLOOO");
-	// }
+	extern int		rl_done;
+	t_shell_data	*sd;
+	int				out;
 
-	// This signal is triggered by: ctrl + C
+	sd = obtain_sd(g_env);
 	if (signum == SIGINT)
 	{
-		// Printing out the newline is for a different case, so when just pushing plain ctrl + c, the newline should be omitted.
-		// ft_putchar('\n');
+		if (sd->sigint_heredoc == 1)
+			sd->sigint_heredoc = 2;
+		if (sd->active_processes)
+			ft_putchar('\n');
 		rl_replace_line("", 0);
 		rl_done = 1;
 	}
+	if (signum == SIGCHLD)
+	{
+		wait(&out);
+		sd->exit_code = WEXITSTATUS(out);
+		sd->active_processes--;
+	}
+	if (signum == SIGQUIT && sd->active_processes)
+		ft_putendl_fd("Quit: 3", 2);
 }
 
 static int	sig_no_response(void)
