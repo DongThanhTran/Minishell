@@ -22,7 +22,7 @@ void	unset_env(char *key, t_env *env)
 
 	tmp = env;
 	len = ft_strlen(key);
-	while (tmp && (ft_strncmp(tmp->key, key, len + 1) != 0))
+	while (tmp && (ft_strncmp(tmp->key, key, len - 1) != 0))
 		tmp = tmp->next;
 	if (!tmp)
 		return ;
@@ -48,4 +48,6 @@ void	unset(char **strs, t_env *env)
 		unset_env(strs[i], env);
 		i++;
 	}
+	ft_free_all(sd->env);
+	set_dpointer_env(env, sd);
 }

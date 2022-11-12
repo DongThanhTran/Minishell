@@ -25,9 +25,7 @@ static char	*set_path(char	*path, t_env *env, t_shell_data *sd)
 	char	*env_path;
 
 	env_path = NULL;
-	if (!path)
-		path = ft_retrieve_env("HOME", env);
-	else if (path[0] == '~')
+	if (!path || path[0] == '~')
 	{
 		env_path = ft_retrieve_env("HOME", env);
 		if (!env_path)
@@ -35,8 +33,10 @@ static char	*set_path(char	*path, t_env *env, t_shell_data *sd)
 			cd_error(sd, "HOME not set");
 			return (NULL);
 		}
-		else if (&path[1])
+		if (path)
 			path = ft_strjoin(env_path, &path[1]);
+		else
+			path = ft_strdup(env_path);
 		free(env_path);
 	}
 	else if (path[0] == '-')
@@ -44,6 +44,8 @@ static char	*set_path(char	*path, t_env *env, t_shell_data *sd)
 		path = ft_retrieve_env("OLDPWD", env);
 		if (!path)
 			cd_error(sd, "OLDPWD not set");
+		else
+			ft_putendl_fd(path, 1);
 	}
 	return (path);
 }

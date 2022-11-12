@@ -113,6 +113,7 @@ int				ft_ex_heredoc(t_env *env, t_token *token, int *fd);
 // shell data
 t_shell_data	*obtain_sd(t_env *env);
 int				clear_sd(t_env *env);
+void			set_dpointer_env(t_env *env, t_shell_data *sd);
 
 // parser
 void			ft_parser(t_token *tokens, t_env *env, int fd);

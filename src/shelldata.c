@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-static void	set_dpointer_env(t_env *env, t_shell_data *sd)
+void	set_dpointer_env(t_env *env, t_shell_data *sd)
 {
 	t_env			*tmp;
 	int				len;
