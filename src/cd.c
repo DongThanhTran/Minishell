@@ -12,8 +12,11 @@
 
 #include "../minishell.h"
 
-static char	*cd_into_path(char *path, t_shell_data *sd)
+static char	*cd_into_path(char *path, t_shell_data *sd, t_env *env)
 {
+	// For input: 'cd ~' the pwd should be set to the user, so my device wpuld be: /Users/mlvb
+	if (!path || !ft_strncmp(path, "~", 2))
+		path = ft_retrieve_env("HOME", env);
 	if (chdir(path) < 0)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -33,7 +36,7 @@ void	ft_cd(char *path, t_env *env)
 
 	sd = obtain_sd(env);
 	sd->exit_code = 0;
-	path = cd_into_path(path, sd);
+	path = cd_into_path(path, sd, env);
 	if (path == NULL)
 		return ;
 	unset_env("OLDPWD", env);
