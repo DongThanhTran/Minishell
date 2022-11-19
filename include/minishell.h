@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/19 14:47:09 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/19 19:23:08 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_env {
 typedef struct s_shell_data {
 	int		exit_code;
 	char	**env;
+	char	*home;
 	char	*pwd;
 	int		env_lines_number;
 	int		active_processes;
@@ -134,8 +135,8 @@ void			unset(char **strs, t_env *env);
 void			ft_exit(char **strs, t_env *env);
 void			ft_export(char **commands, t_env *env);
 void			ft_cd(char *path, t_env *env);
-void			ft_echo(char **strs);
-void			ft_env(t_env *env);
+void			ft_echo(char **strs, t_env *env);
+void			ft_env(char **strs, t_env *env);
 void			sort_env(char **env);
 void			ft_pwd(t_env *env);
 

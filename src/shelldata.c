@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 21:26:00 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/02 20:01:52 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/19 18:53:29 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	set_dpointer_env(t_env *env, t_shell_data *sd)
 		tmp = tmp->next;
 		len++;
 	}
+	//Add malloc protect
 	sd->env = malloc(sizeof(char *) * (len + 1));
 	sd->env[len] = NULL;
 	while (len--)
@@ -45,7 +46,7 @@ static void	shell_lvl(t_env *env)
 	len = ft_strlen("SHLVL=");
 	value = ft_retrieve_env("SHLVL=", env);
 	if (!value)
-		exit (EXIT_FAILURE); //niet zeker wat we moeten doen in deze situ
+		exit (EXIT_FAILURE);
 	shlvl = ft_atoi(value);
 	free (value);
 	while (env && (ft_strncmp(env->key, "SHLVL=", len) != 0))
