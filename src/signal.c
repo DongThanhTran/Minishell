@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 17:26:19 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/19 14:26:25 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/19 19:43:53 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ static void	sighandler(int signum)
 		sd->active_processes--;
 	}
 	if (signum == SIGQUIT && sd->active_processes)
+	{
 		ft_putendl_fd("Quit: 3", 2);
+		sd->exit_code = 131;
+	}
 }
 
 static int	sig_no_response(void)
