@@ -6,22 +6,22 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 12:38:49 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/02 19:49:05 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/19 14:46:09 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	ft_expand_dollar(t_token *token)
+static void	ft_expand_dollar(t_token *token, t_env *env)
 {
 	char			*str;
 	t_shell_data	*sd;
 
-	sd = obtain_sd(g_env);
+	sd = obtain_sd(env);
 	token->token_type = word;
 	if (token->value[1] != '?')
 	{
-		str = ft_retrieve_env(&token->value[1], g_env);
+		str = ft_retrieve_env(&token->value[1], env);
 		free(token->value);
 		if (!str)
 			token->value = ft_strdup("");
@@ -67,7 +67,7 @@ static void	ft_join_strs(t_token *token)
 	}
 }
 
-static int	ft_quotes_expander(t_token *token, t_token_type type)
+static int	ft_quotes_expander(t_token *token, t_token_type type, t_env *env)
 {
 	char	*tmp;
 
@@ -80,7 +80,7 @@ static int	ft_quotes_expander(t_token *token, t_token_type type)
 	{
 		if (type == dquote && token->next->token_type == dollar && \
 			token->next->value[1] != '\0')
-			ft_expand_dollar(token->next);
+			ft_expand_dollar(token->next, env);
 		tmp = token->value;
 		token->value = ft_strjoin(token->value, token->next->value);
 		free(tmp);
@@ -106,7 +106,7 @@ static void	ft_set_delimiter(t_token *token)
 		token->next->next->token_type = word;
 }
 
-int	ft_expander(t_token *head)
+int	ft_expander(t_token *head, t_env *env)
 {
 	t_token	*token;
 	int		error;
@@ -116,11 +116,11 @@ int	ft_expander(t_token *head)
 	while (token)
 	{
 		if (token->token_type == quote)
-			error = ft_quotes_expander(token, quote);
+			error = ft_quotes_expander(token, quote, env);
 		if (token->token_type == dquote)
-			error = ft_quotes_expander(token, dquote);
+			error = ft_quotes_expander(token, dquote, env);
 		if (token->token_type == dollar && token->value[1] != '\0')
-			ft_expand_dollar(token);
+			ft_expand_dollar(token, env);
 		if (token->token_type == here_doc)
 			ft_set_delimiter(token);
 		if (error)

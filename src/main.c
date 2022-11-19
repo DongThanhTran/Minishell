@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 16:32:02 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/02 20:51:48 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/19 14:44:55 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,13 @@ char	*ft_prompt_check(char *prompt)
 int	main(int argc, char *argv[], char *envp[])
 {
 	char		*input;
+	t_env		*env;			
 	t_token		*head;
 
 	(void)argc;
 	(void)argv;
-	g_env = set_env(envp);
-	obtain_sd(g_env);
+	env = set_env(envp);
+	obtain_sd(env);
 	init_signals();
 	head = ft_init_token();
 	ft_checkmalloc(head);
@@ -71,9 +72,9 @@ int	main(int argc, char *argv[], char *envp[])
 		if (input && *input)
 			add_history(input);
 		ft_lexer(head, input);
-		if (ft_expander(head))
+		if (ft_expander(head, env))
 			if (ft_pre_parser(head))
-				ft_parser(head, g_env, STDIN_FILENO);
+				ft_parser(head, env, STDIN_FILENO);
 		while (head->next)
 			ft_token_del(head->next);
 		free(input);

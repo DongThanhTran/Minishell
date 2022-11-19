@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/01 17:32:11 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/19 13:53:16 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/19 18:20:14 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,28 +74,13 @@ int	add_var(t_env **head, char *env_str)
 	tmp->next = new;
 	return (1);
 }
-//to do:
-// check welke weg moet.
-// This does exactly the same as the function underneath..? nee toch?
-// char	*ft_get_env(t_token *token, t_env *env)
-// {
-// 	t_env	*tmp;
-
-// 	tmp = env;
-// 	while (tmp && (ft_strncmp(&token->value[1], tmp->key, \
-// 			(token->len - 1)) != 0))
-// 		tmp = tmp->next;
-// 	if (!tmp)
-// 		return (NULL);
-// 	return (ft_strdup(tmp->value));
-// }
 
 char	*ft_retrieve_env(char *key, t_env *env)
 {
 	int	len;
 
 	len = ft_strlen(key);
-	while (env && (ft_strncmp(env->key, key, len) != 0))
+	while (env && (ft_strncmp(env->key, key, (len + 1)) != 0))
 		env = env->next;
 	if (!env)
 		return (NULL);

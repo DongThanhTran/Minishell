@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 22:56:12 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/10/27 18:37:37 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/19 14:17:02 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ void	unset_env(char *key, t_env *env)
 		tmp = tmp->next;
 	if (!tmp)
 		return ;
+	if (env == tmp)
+	{
+		env = env->next;
+		free(tmp->key);
+		free(tmp->value);
+		free(tmp);
+		return ;
+	}
 	while (env->next != tmp)
 		env = env->next;
 	hold = tmp->next;

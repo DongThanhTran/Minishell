@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/02 20:52:05 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/19 14:47:09 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int				builtin_change(char **commands, t_env *env);
 int				builtin_unchange(char **command, t_env *env);
 
 // Expander
-int				ft_expander(t_token *head);
+int				ft_expander(t_token *head, t_env *env);
 
 //Built-ins
 void			unset_env(char *key, t_env *env);

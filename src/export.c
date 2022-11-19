@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/25 20:12:08 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/01 16:08:33 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/19 17:40:14 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	length_export_line(char *str)
 	int	idx;
 
 	idx = 0;
-	if (!(str[idx] == '_') || ft_isalpha(str[idx]))
+	if (!(str[idx] == '_' || ft_isalpha(str[idx])))
 		return (0);
 	while (str[idx])
 	{
@@ -89,8 +89,8 @@ void	ft_export(char **commands, t_env *env)
 		length = validate_export(commands[i]);
 		if (length)
 		{
-			sub = ft_substr(commands[i], 0, length);
-			unset_env(commands[i], env);
+			sub = ft_substr(commands[i], 0, (length + 1));
+			unset_env(sub, env);
 			free(sub);
 			add_var(&env, commands[i]);
 		}
@@ -98,6 +98,8 @@ void	ft_export(char **commands, t_env *env)
 			sd->exit_code = 1;
 		i++;
 	}
+	ft_free_all(sd->env);
+	set_dpointer_env(env, sd);
 }
 
 // remninder:

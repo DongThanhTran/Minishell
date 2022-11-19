@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/25 23:25:13 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/01 16:13:34 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/19 18:17:06 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ static char	*set_path(char	*path, t_env *env, t_shell_data *sd)
 	env_path = NULL;
 	if (!path || path[0] == '~')
 	{
-		env_path = ft_retrieve_env("HOME", env);
+		env_path = ft_retrieve_env("HOME=", env);
+		while(env)
+		{
+			printf("%s%s\n", env->key, env->value);
+			env = env->next;
+		}
 		if (!env_path)
 		{
 			cd_error(sd, "HOME not set");
@@ -41,7 +46,7 @@ static char	*set_path(char	*path, t_env *env, t_shell_data *sd)
 	}
 	else if (path[0] == '-')
 	{
-		path = ft_retrieve_env("OLDPWD", env);
+		path = ft_retrieve_env("OLDPWD=", env);
 		if (!path)
 			cd_error(sd, "OLDPWD not set");
 		else
@@ -66,7 +71,6 @@ static char	*cd_into_path(char *path, t_shell_data *sd, t_env *env)
 	return (path);
 }
 
-// correctie naar: add_var (&env, str);
 void	ft_cd(char *path, t_env *env)
 {
 	t_shell_data	*sd;
@@ -88,4 +92,6 @@ void	ft_cd(char *path, t_env *env)
 	str = ft_strjoin("PWD=", sd->pwd);
 	add_var(&env, str);
 	free(str);
+	ft_free_all(sd->env);
+	set_dpointer_env(env, sd);
 }
