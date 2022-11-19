@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/25 23:25:13 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/19 18:17:06 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/19 18:31:47 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,6 @@ static char	*set_path(char	*path, t_env *env, t_shell_data *sd)
 	if (!path || path[0] == '~')
 	{
 		env_path = ft_retrieve_env("HOME=", env);
-		while(env)
-		{
-			printf("%s%s\n", env->key, env->value);
-			env = env->next;
-		}
 		if (!env_path)
 		{
 			cd_error(sd, "HOME not set");
