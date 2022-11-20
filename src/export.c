@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/25 20:12:08 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/19 17:40:14 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/20 17:47:17 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 // To do:
 // The env should be sorted before printing
 
-// wrm '_'?
 static int	length_export_line(char *str)
 {
 	int	idx;
@@ -29,23 +28,51 @@ static int	length_export_line(char *str)
 			idx++;
 		else
 			break ;
-		idx++;
 	}
 	return (idx);
 }
+// Does not work atm
+void	set_export_vars(char *var, t_shell_data *sd)
+{
+	char	**new;
+	int		len;
+	int		i;
 
-static int	validate_export(char *command)
+	printf("check: %d\n", !*(sd->export));
+	len = 5;
+	new = (char **)ft_realloc(sd->export, (len + 1) * sizeof(*sd->export));
+	new[len + 1] = NULL;
+	if (!new)
+		ft_free_all(sd->export);
+	if (!*(sd->export))
+		new[len] = ft_strdup(var);
+	else
+	{
+		i = 0;
+		while (i < len)
+		{
+			new[i] = ft_strdup(sd->export[i]);
+			i++;
+		}
+	}
+	sd->export = new;
+	free(new);
+}
+
+static int	validate_export(char *command, t_shell_data *sd)
 {
 	char	*sub_str;
 	int		pos;
 	int		length;
 
 	sub_str = ft_strchr(command, '=');
+	if (!sub_str)
+		set_export_vars(command, sd);
 	pos = sub_str - command;
 	length = length_export_line(command);
 	if (!pos || length != pos)
 	{
-		ft_putstr_fd("minishell: export: `", 2);
+		ft_putstr_fd("Minishell: export: ", 2);
 		ft_putstr_fd(command, 2);
 		ft_putendl_fd("': not a valid identifier", 2);
 		return (0);
@@ -81,12 +108,13 @@ void	ft_export(char **commands, t_env *env)
 
 	i = 1;
 	sd = obtain_sd(env);
+	printf("\nhecl sd: %s\n", *(sd->export));
 	sd->exit_code = 0;
 	if (commands[1] == NULL)
 		ft_print_env(sd);
 	while (commands[i])
 	{
-		length = validate_export(commands[i]);
+		length = validate_export(commands[i], sd);
 		if (length)
 		{
 			sub = ft_substr(commands[i], 0, (length + 1));

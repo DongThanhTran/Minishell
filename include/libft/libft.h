@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/14 12:48:44 by dtran         #+#    #+#                 */
-/*   Updated: 2022/05/30 15:17:10 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/20 16:52:20 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -439,6 +439,14 @@ void	*ft_calloc(size_t count, size_t size);
  * @param ptr The pointer which has to be checked.
  */
 void	ft_checkmalloc(void *ptr);
+
+/**
+ * Realloc() function tries to change the size of the allocation pointed 
+ * to by ptr to size, and returns ptr.
+ * @param ptr The pointer which has to be checked.
+ * @param size the size to realloc.
+ */
+void	*ft_realloc(void *ptr, size_t size);
 
 //
 //

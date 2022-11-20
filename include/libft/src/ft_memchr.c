@@ -6,11 +6,13 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/08 11:48:52 by dtran         #+#    #+#                 */
-/*   Updated: 2021/11/22 17:39:07 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/20 14:44:38 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+#include <stdio.h>
 
 void	*ft_memchr(const void *src, int c, size_t num)
 {

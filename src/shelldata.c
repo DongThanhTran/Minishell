@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 21:26:00 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/19 18:53:29 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/20 17:11:05 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,14 @@ static void	shell_lvl(t_env *env)
 		exit (EXIT_FAILURE);
 }
 
+static void	init_export(t_shell_data *sd)
+{
+	sd->export = malloc(sizeof(char *) * 1);
+	if (!sd->export)
+		exit(1);
+	sd->export[1] = NULL;
+}
+
 int	clear_sd(t_env *env)
 {
 	t_shell_data	*sd;
@@ -64,6 +72,7 @@ int	clear_sd(t_env *env)
 	sd = obtain_sd(env);
 	exit = sd->exit_code;
 	ft_free_all(sd->env);
+	free(sd->export);
 	free(sd->pwd);
 	return (exit);
 }
@@ -75,6 +84,7 @@ t_shell_data	*obtain_sd(t_env *env)
 	if (sd.env)
 		return (&sd);
 	set_dpointer_env(env, &sd);
+	init_export(&sd);
 	sd.pwd = getcwd(sd.pwd, 0);
 	shell_lvl(env);
 	return (NULL);
