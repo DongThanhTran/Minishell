@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/19 14:41:13 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/22 18:13:28 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,25 +101,19 @@ void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 	pid_t	pid;
 	char	**command;
 
-	while (1)
+	fd[0] = pipefd;
+	fd[1] = STDOUT_FILENO;
+	pipefd = ft_set_fds(env, tokens, fd);
+	if (pipefd < 0)
+		return ;
+	command = ft_parse_tokens(tokens);
+	pid = ft_execute(command, fd, env);
+	ft_free_all(command);
+	if (pipefd)
 	{
-		fd[0] = pipefd;
-		fd[1] = STDOUT_FILENO;
-		pipefd = ft_set_fds(env, tokens, fd);
-		if (pipefd < 0)
-			return ;
-		command = ft_parse_tokens(tokens);
-		pid = ft_execute(command, fd, env);
-		ft_free_all(command);
-		if (pipefd)
-		{
-			ft_token_del(tokens->next);
-			continue ;
-		}
-		else
-		{
-			waitpid(pid, NULL, 0);
-			break ;
-		}
+		ft_token_del(tokens->next);
+		ft_parser(tokens, env, pipefd);
 	}
+	else
+		waitpid(pid, NULL, 0);
 }

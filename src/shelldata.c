@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 21:26:00 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/20 17:11:05 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/22 22:28:12 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	set_dpointer_env(t_env *env, t_shell_data *sd)
 		tmp = tmp->next;
 		len++;
 	}
-	//Add malloc protect
 	sd->env = malloc(sizeof(char *) * (len + 1));
+	ft_checkmalloc(sd->env);
 	sd->env[len] = NULL;
 	while (len--)
 	{
@@ -56,12 +56,13 @@ static void	shell_lvl(t_env *env)
 		exit (EXIT_FAILURE);
 }
 
+// Free all
 static void	init_export(t_shell_data *sd)
 {
-	sd->export = malloc(sizeof(char *) * 1);
-	if (!sd->export)
-		exit(1);
-	sd->export[1] = NULL;
+	sd->export = malloc(sizeof(sd->export));
+	sd->export->key = NULL;
+	sd->export->next = NULL;
+	sd->export->set = 0;
 }
 
 int	clear_sd(t_env *env)
@@ -72,7 +73,6 @@ int	clear_sd(t_env *env)
 	sd = obtain_sd(env);
 	exit = sd->exit_code;
 	ft_free_all(sd->env);
-	free(sd->export);
 	free(sd->pwd);
 	return (exit);
 }
@@ -86,6 +86,7 @@ t_shell_data	*obtain_sd(t_env *env)
 	set_dpointer_env(env, &sd);
 	init_export(&sd);
 	sd.pwd = getcwd(sd.pwd, 0);
+	sd.exit_code = 0;
 	shell_lvl(env);
 	return (NULL);
 }

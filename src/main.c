@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 16:32:02 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/19 14:44:55 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/22 17:59:57 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,10 @@
 
 t_env *g_env;
 
-void	print_list(t_token *head)
+void	ft_init_pd(t_env *env)
 {
-	while (head != NULL)
-	{
-		printf("length: %d\t type: %d\t value: %s\n", head->len, \
-				head->token_type, head->value);
-		head = head->next;
-	}
+	init_signals();
+	obtain_sd(env);
 }
 
 char	*ft_prompt_check(char *prompt)
@@ -34,6 +30,12 @@ char	*ft_prompt_check(char *prompt)
 		str = readline(prompt);
 		if (str && *str)
 			add_history(str);
+		if (!str)
+		{
+			ft_putendl_fd("exit", 1);
+			rl_clear_history();
+			return (NULL);
+		}
 	}
 	else
 	{
@@ -56,21 +58,14 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	env = set_env(envp);
-	obtain_sd(env);
-	init_signals();
+	ft_init_pd(env);
 	head = ft_init_token();
 	ft_checkmalloc(head);
 	while (1)
 	{
-		input = readline("Minishell$ ");
+		input = ft_prompt_check("Minishell$ ");
 		if (!input)
-		{
-			ft_putendl_fd("exit", 1);
-			rl_clear_history();
-			exit(0);
-		}
-		if (input && *input)
-			add_history(input);
+			break ;
 		ft_lexer(head, input);
 		if (ft_expander(head, env))
 			if (ft_pre_parser(head))
@@ -79,5 +74,5 @@ int	main(int argc, char *argv[], char *envp[])
 			ft_token_del(head->next);
 		free(input);
 	}
-	return (0);
+	return (clear_sd(env));
 }
