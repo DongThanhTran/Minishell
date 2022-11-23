@@ -67,6 +67,7 @@ static int	validate_export(char *command, t_shell_data *sd)
 	int		pos;
 	int		length;
 
+	sd->export->set = 1;
 	length = ft_strlen(command);
 	if (length == 0)
 		return (export_error(command));
