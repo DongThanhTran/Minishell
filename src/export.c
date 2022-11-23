@@ -37,15 +37,32 @@ int	export_error(char *command)
 	return (0);
 }
 
+int	export_exists(char *var, t_shell_data *sd)
+{
+	t_local	*tmp;
+
+	tmp = sd->export;
+	if (!tmp->key)
+		return (1);
+	while (tmp)
+	{
+		if (ft_strncmp(var, tmp->key, ft_strlen(var)) == 0)
+			return (0);
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 int	set_export_vars(char *var, t_shell_data *sd)
 {
 	t_local	*new;
 	t_local	*tmp;
 
-	sd->export->set = 1;
 	tmp = sd->export;
 	if (length_export_line(var) == 0)
 		return (export_error(var));
+	if (!export_exists(var, sd))
+		return (0);
 	if (!sd->export->key)
 	{
 		sd->export->key = ft_strdup(var);
@@ -61,6 +78,38 @@ int	set_export_vars(char *var, t_shell_data *sd)
 	return (1);
 }
 
+void	delete_local_export(char *command, t_shell_data *sd)
+{
+	t_local	*tmp;
+	t_local *hold;
+
+	tmp = sd->export;
+	if (ft_strncmp(tmp->key, command, ft_strlen(tmp->key)) == 0)
+	{
+		if (sd->export->next)
+		{
+			sd->export = sd->export->next;
+			free(tmp->key);
+			free(tmp);
+			return ;
+		}
+		free(tmp->key);
+		tmp->key = NULL;
+		return ;
+	}
+	while (tmp->next)
+	{
+		if (ft_strncmp(tmp->next->key, command, ft_strlen(tmp->next->key)) == 0)
+		{
+			hold = tmp->next;
+			tmp->next = tmp->next->next;
+			free(hold->key);
+			free(hold);
+		}
+		tmp = tmp->next;
+	}
+}
+
 static int	validate_export(char *command, t_shell_data *sd)
 {
 	char	*sub_str;
@@ -74,6 +123,7 @@ static int	validate_export(char *command, t_shell_data *sd)
 	sub_str = ft_strchr(command, '=');
 	if (!sub_str)
 		return (set_export_vars(command, sd));
+	delete_local_export(command, sd);
 	sd->export->set = 0;
 	pos = sub_str - command;
 	length = length_export_line(command);
@@ -109,10 +159,6 @@ static void	ft_print_env(t_shell_data *sd)
 	}
 }
 
-	// Might need to add some check for the input of export.
-	// Examples of export command:
-	// - export
-	// - export hello=world <- might need to check this if it can fail
 void	ft_export(char **commands, t_env *env)
 {
 	t_shell_data	*sd;
