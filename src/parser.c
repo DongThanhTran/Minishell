@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/22 18:13:28 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/26 13:28:10 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,13 @@ static char	**ft_parse_tokens(t_token *token)
 	int		len;
 
 	len = ft_len_process(&token);
+	if (len == 1)
+	{
+		res = ft_split(token->value, ' ');
+		token = token->prev;
+		ft_token_del(token->next);
+		return (res);
+	}
 	res = malloc(sizeof(*res) * (len + 1));
 	if (!res)
 		exit(EXIT_FAILURE);
@@ -94,7 +101,6 @@ static int	ft_set_fds(t_env *env, t_token *token, int fd[2])
 	return (0);
 }
 
-// testen wanneer ft_parser moet stoppen met de while(1)
 void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 {
 	int		fd[2];

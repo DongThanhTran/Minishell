@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 13:02:59 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/01 16:24:07 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/26 14:05:25 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,18 @@ static char	*ft_find_paths(char *command, char **paths)
 	int		idx;
 
 	idx = 0;
-	while (paths[idx])
+	if (ft_strncmp(command, "", 2) != 0)
 	{
-		tmp = ft_strjoin(paths[idx], "/");
-		free(paths[idx]);
-		paths[idx] = ft_strjoin(tmp, command);
-		free(tmp);
-		if (!access(paths[idx], F_OK))
-			return (ft_strdup(paths[idx]));
-		idx++;
+		while (paths[idx])
+		{
+			tmp = ft_strjoin(paths[idx], "/");
+			free(paths[idx]);
+			paths[idx] = ft_strjoin(tmp, command);
+			free(tmp);
+			if (!access(paths[idx], F_OK))
+				return (ft_strdup(paths[idx]));
+			idx++;
+		}
 	}
 	ft_putstr_fd("Minishell: ", 2);
 	ft_putstr_fd(command, 2);
