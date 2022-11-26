@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/26 13:28:10 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/26 19:57:10 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,5 +121,5 @@ void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 		ft_parser(tokens, env, pipefd);
 	}
 	else
-		waitpid(pid, NULL, 0);
+		wait(&pid);
 }

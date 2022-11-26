@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 13:02:59 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/26 14:05:25 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/26 19:51:44 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ pid_t	ft_execute(char **commands, int fds[2], t_env *env)
 			exit(EXIT_SUCCESS);
 		path = ft_getpath(*commands, env);
 		execve(path, commands, sd->env);
-		perror("execve");
+		perror(*commands);
 		exit(EXIT_FAILURE);
 	}
 	ft_close_fds(fds);

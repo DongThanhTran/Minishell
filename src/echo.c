@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/29 15:54:01 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/19 19:21:49 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/26 19:03:43 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	ft_print(char **strs, int pos, t_env *env)
 		if (ft_strncmp("~", strs[pos], 2) == 0)
 		{
 			env_var = ft_retrieve_env("HOME=", env);
+			if (!env_var)
+				env_var = getenv("HOME");
 			ft_putstr(env_var);
 		}
 		else
@@ -31,13 +33,33 @@ void	ft_print(char **strs, int pos, t_env *env)
 	}
 }
 
-//TODO: Create function to check n's
-// minishell: export: `test1': not a valid identifier <- double check
+int	only_n(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_strncmp(str, "-n", 3))
+		return (1);
+	if (str[i] == '-' && !str[i + 1])
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '-')
+		{
+			i++;
+			continue ;
+		}
+		if (str[i] != 'n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 void	ft_echo(char **strs, t_env *env)
 {
-	int	newline;
-	int	idx;
+	int		newline;
+	int		idx;
 
 	if (!strs[1])
 		return (ft_putchar_fd('\n', 1));
@@ -45,7 +67,7 @@ void	ft_echo(char **strs, t_env *env)
 	newline = ft_strncmp(strs[1], "-n", 3);
 	if (!newline)
 		idx++;
-	while (!ft_strncmp(strs[idx], "-n", 3))
+	while (only_n(strs[idx]))
 		idx++;
 	ft_print(strs, idx, env);
 	if (newline)

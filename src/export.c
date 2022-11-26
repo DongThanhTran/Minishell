@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/25 20:12:08 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/22 22:19:24 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/26 20:14:38 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ static int	length_export_line(char *str)
 	return (idx);
 }
 
-int	export_error(char *command)
+int	export_error(char *command, t_shell_data *sd)
 {
 	ft_putstr_fd("Minishell: export: ", 2);
 	ft_putstr_fd(command, 2);
 	ft_putendl_fd("': not a valid identifier", 2);
+	sd->exit_code = 1;
 	return (0);
 }
 
@@ -60,7 +61,7 @@ int	set_export_vars(char *var, t_shell_data *sd)
 
 	tmp = sd->export;
 	if (length_export_line(var) == 0)
-		return (export_error(var));
+		return (export_error(var, sd));
 	if (!export_exists(var, sd))
 		return (0);
 	if (!sd->export->key)
@@ -119,7 +120,7 @@ static int	validate_export(char *command, t_shell_data *sd)
 	sd->export->set = 1;
 	length = ft_strlen(command);
 	if (length == 0)
-		return (export_error(command));
+		return (export_error(command, sd));
 	sub_str = ft_strchr(command, '=');
 	if (!sub_str)
 		return (set_export_vars(command, sd));
@@ -128,7 +129,7 @@ static int	validate_export(char *command, t_shell_data *sd)
 	pos = sub_str - command;
 	length = length_export_line(command);
 	if (!pos || length != pos)
-		export_error(command);
+		export_error(command, sd);
 	return (length);
 }
 
