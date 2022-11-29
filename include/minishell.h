@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/26 16:03:58 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/29 19:11:29 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,10 @@ int				clear_sd(t_env *env);
 void			set_dpointer_env(t_env *env, t_shell_data *sd);
 
 // parser
-void			ft_parser(t_token *tokens, t_env *env, int fd);
+void			ft_parser(t_token *tokens, t_env *env, int pipefd);
 
 // Executor
-pid_t			ft_execute(char **args, int fds[2], t_env *env);
+pid_t			ft_execute(char **args, int fds[3], t_env *env);
 
 // builtin funcs
 int				builtin_change(char **commands, t_env *env);

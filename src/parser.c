@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/26 19:57:10 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/29 19:09:40 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static int	ft_set_fds(t_env *env, t_token *token, int fd[2])
 
 void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 {
-	int		fd[2];
+	int		fd[3];
 	pid_t	pid;
 	char	**command;
 
@@ -112,6 +112,7 @@ void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 	pipefd = ft_set_fds(env, tokens, fd);
 	if (pipefd < 0)
 		return ;
+	fd[2] = pipefd;
 	command = ft_parse_tokens(tokens);
 	pid = ft_execute(command, fd, env);
 	ft_free_all(command);
