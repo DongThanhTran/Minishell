@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 13:02:59 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/29 19:10:50 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/29 19:23:37 by dtran         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,8 @@ pid_t	ft_execute(char **commands, int fds[3], t_env *env)
 	{
 		ft_dup2(fds[0], STDIN_FILENO);
 		ft_dup2(fds[1], STDOUT_FILENO);
-		ft_close(fds[2]);
+		if (fds[2] > STDERR_FILENO)
+			ft_close(fds[2]);
 		if (builtin_unchange(commands, env))
 			exit(EXIT_SUCCESS);
 		path = ft_getpath(*commands, env);
