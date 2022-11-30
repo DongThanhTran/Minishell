@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/08/31 15:57:39 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/29 19:11:29 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/30 19:19:54 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,11 @@ typedef struct s_shell_data {
 	int				env_lines_number;
 	int				active_processes;
 	int				sigint_heredoc;
+	int				pipe_set;
 	struct s_local	*export;
 }	t_shell_data;
 
-extern t_env *g_env;
+extern t_env	*g_env;
 
 // main
 char			*ft_prompt_check(char *prompt);
@@ -134,6 +135,17 @@ int				builtin_unchange(char **command, t_env *env);
 
 // Expander
 int				ft_expander(t_token *head, t_env *env);
+
+// Export
+void			delete_local_export(char *command, t_shell_data *sd);
+
+// Export Utils
+int				length_export_line(char *str);
+int				export_error(char *command, t_shell_data *sd);
+int				validate_export(char *command, t_shell_data *sd);
+int				set_export_vars(char *var, t_shell_data *sd);
+int				export_exists(char *var, t_shell_data *sd);
+void			ft_print_env(t_shell_data *sd);
 
 //Built-ins
 void			unset_env(char *key, t_env *env);

@@ -6,7 +6,7 @@
 #    By: dtran <dtran@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/08/31 18:10:25 by dtran         #+#    #+#                  #
-#    Updated: 2022/11/01 16:24:34 by dtran         ########   odam.nl          #
+#    Updated: 2022/11/30 19:48:01 by mlammert      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,6 +57,7 @@ SRCS		= $(addprefix src/, $(addsuffix .c, \
 				builtin \
 				lst_utils \
 				export \
+				export_utils \
 				exit \
 				pwd \
 				cd \
@@ -70,13 +71,13 @@ all: message libft gnl $(NAME)
 
 #===============================================================================: Main compile
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(HEADERS) $(LIBFT)/libft.a $(GNL)/get_next_line.a $(READLINE_DIRS) $(READLINE) -o $(NAME)
+	@$(CC) $(OBJS) -fsanitize=address -g $(HEADERS) $(LIBFT)/libft.a $(GNL)/get_next_line.a $(READLINE_DIRS) $(READLINE) -o $(NAME)
 	@printf "$(GREEN)✅Executable \"$(NAME)\" created!$(RESET)\n\n"
 
 #===============================================================================: C file compile
 objs/%.o: src/%.c
 	@$(MKDIR)
-	@$(CC) $(CFLAGS) $(INCLUDE_READLINE) -o $@ -c $< $(HEADERS)
+	@$(CC) $(CFLAGS) -fsanitize=address -g $(INCLUDE_READLINE) -o $@ -c $< $(HEADERS)
 ifeq ($(DB),1)
 	@printf "$(GREEN)\r🔨Compiling: $(MAGENTA)$(notdir $<)$(GREEN)\r\e[35C[OK]\n$(RESET)"
 endif

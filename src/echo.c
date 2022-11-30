@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/29 15:54:01 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/26 19:03:43 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/30 19:35:27 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	only_n(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	if (!ft_strncmp(str, "-n", 3))
 		return (1);
 	if (str[i] == '-' && !str[i + 1])
@@ -68,7 +70,10 @@ void	ft_echo(char **strs, t_env *env)
 	if (!newline)
 		idx++;
 	while (only_n(strs[idx]))
+	{
+		newline = 0;
 		idx++;
+	}
 	ft_print(strs, idx, env);
 	if (newline)
 		ft_putchar('\n');

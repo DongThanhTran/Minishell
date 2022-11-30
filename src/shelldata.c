@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 21:26:00 by dtran         #+#    #+#                 */
-/*   Updated: 2022/11/22 22:28:12 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/30 17:49:02 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ static void	shell_lvl(t_env *env)
 // Free all
 static void	init_export(t_shell_data *sd)
 {
-	sd->export = malloc(sizeof(sd->export));
+	sd->export = malloc(sizeof(t_local));
+	ft_checkmalloc(sd->export);
 	sd->export->key = NULL;
 	sd->export->next = NULL;
 	sd->export->set = 0;

@@ -6,53 +6,11 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/25 20:12:08 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/26 20:14:38 by mlammert      ########   odam.nl         */
+/*   Updated: 2022/11/30 19:58:30 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-static int	length_export_line(char *str)
-{
-	int	idx;
-
-	idx = 0;
-	if (!(str[idx] == '_' || ft_isalpha(str[idx])))
-		return (0);
-	while (str[idx])
-	{
-		if (str[idx] == '_' || ft_isalnum(str[idx]))
-			idx++;
-		else
-			break ;
-	}
-	return (idx);
-}
-
-int	export_error(char *command, t_shell_data *sd)
-{
-	ft_putstr_fd("Minishell: export: ", 2);
-	ft_putstr_fd(command, 2);
-	ft_putendl_fd("': not a valid identifier", 2);
-	sd->exit_code = 1;
-	return (0);
-}
-
-int	export_exists(char *var, t_shell_data *sd)
-{
-	t_local	*tmp;
-
-	tmp = sd->export;
-	if (!tmp->key)
-		return (1);
-	while (tmp)
-	{
-		if (ft_strncmp(var, tmp->key, ft_strlen(var)) == 0)
-			return (0);
-		tmp = tmp->next;
-	}
-	return (1);
-}
 
 int	set_export_vars(char *var, t_shell_data *sd)
 {
@@ -82,9 +40,11 @@ int	set_export_vars(char *var, t_shell_data *sd)
 void	delete_local_export(char *command, t_shell_data *sd)
 {
 	t_local	*tmp;
-	t_local *hold;
+	t_local	*hold;
 
 	tmp = sd->export;
+	if (tmp->key == NULL)
+		return ;
 	if (ft_strncmp(tmp->key, command, ft_strlen(tmp->key)) == 0)
 	{
 		if (sd->export->next)
@@ -98,20 +58,21 @@ void	delete_local_export(char *command, t_shell_data *sd)
 		tmp->key = NULL;
 		return ;
 	}
-	while (tmp->next)
+	while (tmp)
 	{
-		if (ft_strncmp(tmp->next->key, command, ft_strlen(tmp->next->key)) == 0)
+		if (ft_strncmp(tmp->key, command, ft_strlen(command)) == 0)
 		{
-			hold = tmp->next;
-			tmp->next = tmp->next->next;
+			hold = tmp;
+			tmp = tmp->next;
 			free(hold->key);
 			free(hold);
+			return ;
 		}
 		tmp = tmp->next;
 	}
 }
 
-static int	validate_export(char *command, t_shell_data *sd)
+int	validate_export(char *command, t_shell_data *sd)
 {
 	char	*sub_str;
 	int		pos;
@@ -119,21 +80,21 @@ static int	validate_export(char *command, t_shell_data *sd)
 
 	sd->export->set = 1;
 	length = ft_strlen(command);
-	if (length == 0)
+	if (length == 0 || !length_export_line(command))
 		return (export_error(command, sd));
 	sub_str = ft_strchr(command, '=');
 	if (!sub_str)
 		return (set_export_vars(command, sd));
 	delete_local_export(command, sd);
-	sd->export->set = 0;
 	pos = sub_str - command;
 	length = length_export_line(command);
 	if (!pos || length != pos)
 		export_error(command, sd);
+	sd->export->set = 0;
 	return (length);
 }
 
-static void	ft_print_env(t_shell_data *sd)
+void	ft_print_env(t_shell_data *sd)
 {
 	int			i;
 	t_local		*local;

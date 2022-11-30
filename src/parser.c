@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 11:51:17 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/29 19:09:40 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/30 11:31:43 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ static char	**ft_parse_tokens(t_token *token)
 		free(res);
 	}
 	res = malloc(sizeof(*res) * (len + 1));
-	if (!res)
-		exit(EXIT_FAILURE);
+	ft_checkmalloc(res);
 	res[len] = NULL;
 	while (len--)
 	{
@@ -42,15 +41,18 @@ static char	**ft_parse_tokens(t_token *token)
 	return (res);
 }
 
-static int	ft_get_pipe(int *fd)
+static int	ft_get_pipe(int *fd, t_env *env)
 {
-	int	pipefds[2];
+	int				pipefds[2];
+	t_shell_data	*sd;
 
+	sd = obtain_sd(env);
 	ft_pipe(pipefds);
 	if (*fd == STDOUT_FILENO)
 		*fd = pipefds[1];
 	else
 		ft_close(pipefds[1]);
+	sd->pipe_set = 1;
 	return (pipefds[0]);
 }
 
@@ -88,7 +90,7 @@ static int	ft_set_fds(t_env *env, t_token *token, int fd[2])
 		temp = token->next;
 		type = temp->token_type;
 		if (type == pipe_char)
-			return (ft_get_pipe(&fd[1]));
+			return (ft_get_pipe(&fd[1], env));
 		else if (type == here_doc)
 			err = (ft_ex_heredoc(env, temp, &fd[0]));
 		else if (type == inf)
@@ -107,10 +109,12 @@ static int	ft_set_fds(t_env *env, t_token *token, int fd[2])
 
 void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 {
-	int		fd[3];
-	pid_t	pid;
-	char	**command;
+	int				fd[3];
+	pid_t			pid;
+	char			**command;
+	t_shell_data	*sd;
 
+	sd = obtain_sd(env);
 	fd[0] = pipefd;
 	fd[1] = STDOUT_FILENO;
 	pipefd = ft_set_fds(env, tokens, fd);
@@ -127,4 +131,5 @@ void	ft_parser(t_token *tokens, t_env *env, int pipefd)
 	}
 	else
 		wait(&pid);
+	sd->pipe_set = 0;
 }

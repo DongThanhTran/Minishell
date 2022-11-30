@@ -6,7 +6,7 @@
 /*   By: mlammert <mlammert@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/02 13:02:59 by mlammert      #+#    #+#                 */
-/*   Updated: 2022/11/29 19:23:37 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/30 17:30:19 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static char	*ft_find_paths(char *command, char **paths)
 	int		idx;
 
 	idx = 0;
-	if (ft_strncmp(command, "", 2) != 0)
+	if (ft_strncmp(command, "", 2) != 0 && ft_strncmp(command, "..", 2) != 0)
 	{
 		while (paths[idx])
 		{
@@ -81,7 +81,8 @@ static char	*ft_getpath(char *command, t_env *env)
 	char	*path;
 
 	path = NULL;
-	if (*command != '.' && !ft_strchr(command, '/'))
+	if ((*command != '.' && !ft_strchr(command, '/')) || \
+	ft_strncmp(command, "..", 2) == 0)
 	{
 		path_from_env = ft_retrieve_env("PATH=", env);
 		if (!path_from_env)
@@ -109,6 +110,8 @@ pid_t	ft_execute(char **commands, int fds[3], t_env *env)
 	pid = ft_fork(env);
 	if (!pid)
 	{
+		if (!*commands || builtin_change(commands, env))
+			return (ft_close_fds(fds));
 		ft_dup2(fds[0], STDIN_FILENO);
 		ft_dup2(fds[1], STDOUT_FILENO);
 		if (fds[2] > STDERR_FILENO)

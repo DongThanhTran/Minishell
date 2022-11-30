@@ -6,7 +6,7 @@
 /*   By: dtran <dtran@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2021/10/08 10:51:17 by dtran         #+#    #+#                 */
-/*   Updated: 2021/11/16 19:54:00 by dtran         ########   odam.nl         */
+/*   Updated: 2022/11/30 19:31:18 by mlammert      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	ft_strncmp(const char *str1, const char *str2, size_t num)
 	size_t	idx;
 
 	idx = 0;
+	if (!str1 || !str2)
+		return (0);
 	while (idx < num)
 	{
 		if (str1[idx] == '\0' || str2[idx] == '\0')
