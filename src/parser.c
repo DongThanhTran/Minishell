@@ -21,9 +21,13 @@ static char	**ft_parse_tokens(t_token *token)
 	if (len == 1)
 	{
 		res = ft_split(token->value, ' ');
-		token = token->prev;
-		ft_token_del(token->next);
-		return (res);
+		if (res != NULL && *res != NULL)
+		{
+			token = token->prev;
+			ft_token_del(token->next);
+			return (res);
+		}
+		free(res);
 	}
 	res = malloc(sizeof(*res) * (len + 1));
 	if (!res)
